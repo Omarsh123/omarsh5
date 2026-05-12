@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Music Survey</title>
+    <style>
+        body {
+            font-family: Georgia, "Times New Roman", serif;
+            background-color: #f4f1ea;
+            margin: 0;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 520px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border: 1px solid #c0c0c0;
+            padding: 25px 30px;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 1.8em;
+            margin: 0 0 20px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #444;
+            color: #2c2c2c;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 12px;
+            margin-bottom: 4px;
+            font-size: 0.95em;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 60%;
+            padding: 5px;
+            border: 1px solid #999;
+            font-family: inherit;
+            font-size: 0.95em;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #999;
+            font-family: inherit;
+            font-size: 0.95em;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+
+        select {
+            font-family: inherit;
+            font-size: 0.95em;
+            padding: 3px;
+            border: 1px solid #999;
+        }
+
+        fieldset {
+            margin-top: 18px;
+            border: 1px solid #b0b0b0;
+            padding: 10px 15px 15px 15px;
+            background-color: #fafafa;
+        }
+
+        legend {
+            font-weight: bold;
+            font-size: 0.95em;
+            padding: 0 6px;
+            color: #333;
+        }
+
+        .option {
+            display: block;
+            margin: 4px 0;
+            font-weight: normal;
+            font-size: 0.95em;
+        }
+
+        .option input {
+            margin-right: 6px;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        input[type="submit"],
+        input[type="reset"] {
+            font-family: inherit;
+            font-size: 0.9em;
+            padding: 4px 14px;
+            margin-right: 8px;
+            background-color: #e8e8e8;
+            border: 1px solid #888;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover,
+        input[type="reset"]:hover {
+            background-color: #d8d8d8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Music Survey</h1>
+
+        <form method="post" action="http://www.uyar.com/teaching/ecc006/2017spring/login.php">
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name">
+
+            <label for="email">E-Mail:</label>
+            <input type="email" id="email" name="email">
+
+            <!-- Checkbox group -->
+            <fieldset>
+                <legend>Select Your Favorite Types of Music:</legend>
+                <label class="option"><input type="checkbox" name="music" value="Pop"> Pop</label>
+                <label class="option"><input type="checkbox" name="music" value="Classical"> Classical</label>
+                <label class="option"><input type="checkbox" name="music" value="Rock"> Rock</label>
+                <label class="option"><input type="checkbox" name="music" value="Folk"> Folk</label>
+                <label class="option"><input type="checkbox" name="music" value="Rap"> Rap</label>
+                <label class="option"><input type="checkbox" name="music" value="Other"> Other</label>
+            </fieldset>
+
+            <!-- Radio button group -->
+            <fieldset>
+                <legend>Select how often you purchase Music CDs:</legend>
+                <label class="option"><input type="radio" name="purchase" value="Weekly"> Weekly</label>
+                <label class="option"><input type="radio" name="purchase" value="Few" checked> A few CDs each year</label>
+                <label class="option"><input type="radio" name="purchase" value="Monthly"> Monthly</label>
+                <label class="option"><input type="radio" name="purchase" value="Never"> Never purchase</label>
+            </fieldset>
+
+            <!-- Select box: shows 3 items, contains 4 -->
+            <label for="location">Select the locations you listen to Music:</label>
+            <select id="location" name="location" size="3">
+                <option value="home" selected>At home</option>
+                <option value="car">In the car</option>
+                <option value="mp3">Anywhere (MP3 Player)</option>
+                <option value="work">At work</option>
+            </select>
+
+            <!-- Scrolling text box: 60 cols x 3 rows -->
+            <label for="role">What role does music play in your life?</label>
+            <textarea id="role" name="role" cols="60" rows="3"></textarea>
+
+            <div class="buttons">
+                <input type="submit" value="Submit">
+                <input type="reset" value="Reset">
+            </div>
+
+        </form>
+    </div>
+</body>
+</html>
