@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Design Analysis - Homework 8</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #2c2c2c;
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 40px 50px;
+            border-radius: 6px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            color: #1a3d6b;
+            text-align: center;
+            border-bottom: 3px solid #1a3d6b;
+            padding-bottom: 15px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 4px;
+            margin-top: 40px;
+        }
+
+        .appealing h2 {
+            background-color: #2e7d32;
+        }
+
+        .unappealing h2 {
+            background-color: #c62828;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 20px 25px;
+            border-left: 4px solid #ccc;
+            background-color: #fafafa;
+        }
+
+        .appealing .section {
+            border-left-color: #2e7d32;
+        }
+
+        .unappealing .section {
+            border-left-color: #c62828;
+        }
+
+        .question {
+            font-weight: bold;
+            color: #1a3d6b;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        ul {
+            padding-left: 25px;
+        }
+
+        ul li {
+            margin-bottom: 8px;
+        }
+
+        a {
+            color: #1a3d6b;
+            text-decoration: none;
+            border-bottom: 1px dotted #1a3d6b;
+        }
+
+        a:hover {
+            color: #2e7d32;
+            border-bottom: 1px solid #2e7d32;
+        }
+
+        .email-section {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #555;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Web Design Analysis</h1>
+        <p class="subtitle">A comparative review of two websites &mdash; Homework #8</p>
+
+        <!-- ============ APPEALING WEBSITE ============ -->
+        <div class="appealing">
+            <h2>1. Appealing Website: Apple</h2>
+
+            <div class="section">
+                <p class="question">a. What is the URL of the website?</p>
+                <p><a href="https://www.apple.com" target="_blank" rel="noopener">https://www.apple.com</a></p>
+
+                <p class="question">b. Does this page use tables?</p>
+                <p>
+                    No, the page does not use HTML tables for layout. Modern Apple pages
+                    rely on semantic HTML elements like <code>&lt;section&gt;</code>,
+                    <code>&lt;article&gt;</code>, and <code>&lt;div&gt;</code> combined
+                    with CSS Grid and Flexbox. Tables are reserved for tabular data such
+                    as product comparison charts on specific product pages.
+                </p>
+
+                <p class="question">c. Does this page use CSS?</p>
+                <p>
+                    Yes, extensively. CSS is used for the entire page layout, typography
+                    (San Francisco font family), color configuration, hover and scroll
+                    animations, responsive breakpoints for mobile/tablet/desktop, and
+                    transitions between product showcases.
+                </p>
+
+                <p class="question">d. Is this page appealing? List three reasons.</p>
+                <ul>
+                    <li>
+                        <strong>Generous whitespace and clean composition</strong> &mdash;
+                        every product is given room to breathe, drawing the eye exactly
+                        where the designers want it.
+                    </li>
+                    <li>
+                        <strong>Consistent and refined typography</strong> &mdash;
+                        font sizes, weights, and spacing follow a clear hierarchy,
+                        making the page easy to scan.
+                    </li>
+                    <li>
+                        <strong>High-quality imagery and smooth animations</strong> &mdash;
+                        product photos and scroll-triggered effects feel premium and
+                        reinforce the brand identity.
+                    </li>
+                </ul>
+
+                <p class="question">e. If unappealing, what would you improve?</p>
+                <p>Not applicable &mdash; this page is appealing.</p>
+            </div>
+        </div>
+
+        <!-- ============ UNAPPEALING WEBSITE ============ -->
+        <div class="unappealing">
+            <h2>2. Unappealing Website: Ling's Cars</h2>
+
+            <div class="section">
+                <p class="question">a. What is the URL of the website?</p>
+                <p><a href="https://www.lingscars.com" target="_blank" rel="noopener">https://www.lingscars.com</a></p>
+
+                <p class="question">b. Does this page use tables?</p>
+                <p>
+                    Yes, the page makes heavy use of HTML tables for page layout. Tables
+                    are nested inside other tables to position images, banners, and text
+                    blocks &mdash; an outdated approach from the early 2000s that modern
+                    web design avoids.
+                </p>
+
+                <p class="question">c. Does this page use CSS?</p>
+                <p>
+                    Yes, but inconsistently. Inline styles, background images, and
+                    animated GIFs are mixed with CSS rules. The CSS is used mostly for
+                    coloring and text decoration rather than for structured layout.
+                </p>
+
+                <p class="question">d. Is this page unappealing? List three reasons.</p>
+                <ul>
+                    <li>
+                        <strong>Visual overload</strong> &mdash; dozens of animated GIFs,
+                        flashing banners, and bright clashing colors compete for attention,
+                        making the page exhausting to look at.
+                    </li>
+                    <li>
+                        <strong>No clear visual hierarchy</strong> &mdash; everything
+                        screams for attention at the same volume, so the user cannot
+                        tell what is important or where to click first.
+                    </li>
+                    <li>
+                        <strong>Poor typography</strong> &mdash; multiple font families,
+                        sizes, and colors are used randomly, with rainbow text and
+                        all-caps headlines that hurt readability.
+                    </li>
+                </ul>
+
+                <p class="question">e. If unappealing, what would you improve?</p>
+                <ul>
+                    <li>
+                        Replace the table-based layout with a modern CSS Grid or Flexbox
+                        layout for a cleaner, responsive structure.
+                    </li>
+                    <li>
+                        Limit the color palette to two or three brand colors and use
+                        whitespace to separate sections.
+                    </li>
+                    <li>
+                        Remove the animated GIFs and flashing elements; use subtle CSS
+                        transitions for hover states instead.
+                    </li>
+                    <li>
+                        Establish a clear typographic hierarchy with one display font
+                        and one body font.
+                    </li>
+                    <li>
+                        Reorganize content into clear sections with prominent call-to-action
+                        buttons (e.g., "Browse Cars", "Get a Quote").
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
