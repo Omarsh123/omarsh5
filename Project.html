@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zero 3 — Phone Software Specialists</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg:     #ffffff;
+            --sidebar:#0d0d0d;
+            --card:   #f5f5f5;
+            --card2:  #ebebeb;
+            --border: #e0e0e0;
+            --border2:#cccccc;
+            --gold:   #c9a227;
+            --gold-d: #9d7e1c;
+            --gold-l: #ddb940;
+            --green:  #16a34a;
+            --yellow: #d97706;
+            --red:    #dc2626;
+            --cyan:   #0891b2;
+            --text:   #111111;
+            --muted:  #6b6b6b;
+            --muted2: #999999;
+            --grad:   linear-gradient(135deg,#c9a227 0%,#e8c84a 100%);
+        }
+        *{margin:0;padding:0;box-sizing:border-box;}
+        html,body{height:100%;}
+        body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;}
+        .app{display:flex;flex-direction:column;height:100vh;}
+
+        /* ── Top Nav ── */
+        .topnav{background:var(--sidebar);border-bottom:1px solid #222;display:flex;align-items:center;padding:0 28px;height:60px;flex-shrink:0;position:sticky;top:0;z-index:100;}
+        .nav-logo-wrap{display:flex;flex-direction:column;margin-right:36px;flex-shrink:0;}
+        .nav-logo-text{font-size:1.25em;font-weight:900;letter-spacing:-0.5px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+        .nav-logo-sub{font-size:0.6em;color:#666;margin-top:2px;letter-spacing:.3px;}
+        .nav-links{display:flex;align-items:center;gap:3px;flex:1;overflow-x:auto;}
+        .nav-links::-webkit-scrollbar{display:none;}
+        .nav-item{display:flex;align-items:center;gap:8px;padding:8px 15px;border-radius:8px;cursor:pointer;color:#888;font-size:0.83em;font-weight:500;transition:all 0.18s;border:1px solid transparent;user-select:none;white-space:nowrap;flex-shrink:0;}
+        .nav-item i{font-size:0.88em;}
+        .nav-item:hover{background:rgba(255,255,255,0.06);color:#ccc;border-color:#333;}
+        .nav-item.active{background:rgba(201,162,39,0.15);color:var(--gold-l);border-color:rgba(201,162,39,0.3);}
+        .nav-item.active i{color:var(--gold);}
+        .nav-right{margin-left:auto;padding-left:20px;flex-shrink:0;}
+        .nav-right a{color:#555;text-decoration:none;font-size:0.72em;transition:color .18s;}
+        .nav-right a:hover{color:var(--gold-l);}
+
+        /* ── Main ── */
+        .content{flex:1;overflow-y:auto;overflow-x:hidden;background:#fff;}
+        .content::-webkit-scrollbar{width:5px;}
+        .content::-webkit-scrollbar-track{background:transparent;}
+        .content::-webkit-scrollbar-thumb{background:#ddd;border-radius:3px;}
+
+        /* ── Pages ── */
+        .page{min-height:100vh;padding:44px 52px;display:none;}
+        .page.active{display:block;animation:pgFade 0.3s ease forwards;}
+        @keyframes pgFade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+        /* ── Page header ── */
+        .page-hdr{margin-bottom:38px;}
+        .page-badge{display:inline-flex;align-items:center;gap:6px;font-size:0.71em;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:9px;}
+        .page-title{font-size:2em;font-weight:900;line-height:1.18;margin-bottom:8px;color:#000;}
+        .page-sub{color:var(--muted);font-size:0.93em;max-width:500px;}
+
+        /* ── Buttons ── */
+        .btn-primary{display:inline-flex;align-items:center;gap:9px;background:var(--grad);color:#000;padding:13px 26px;border-radius:10px;font-weight:700;font-size:0.92em;border:none;cursor:pointer;transition:all 0.2s;text-decoration:none;}
+        .btn-primary:hover{opacity:.85;transform:translateY(-2px);box-shadow:0 14px 34px rgba(201,162,39,.3);}
+        .btn-outline{display:inline-flex;align-items:center;gap:9px;background:transparent;color:var(--muted);padding:13px 26px;border-radius:10px;font-weight:600;font-size:0.92em;border:1px solid var(--border2);cursor:pointer;transition:all 0.2s;text-decoration:none;}
+        .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+
+        /* ═══ PAGE 1 ═══ */
+        .home-hero{padding:60px 0 40px;}
+        .home-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,162,39,.08);border:1px solid rgba(201,162,39,.25);color:var(--gold);padding:6px 16px;border-radius:20px;font-size:0.77em;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:24px;}
+        .home-h1{font-size:clamp(2.1em,4vw,3.2em);font-weight:900;line-height:1.1;margin-bottom:18px;color:#000;}
+        .grad-text{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .home-desc{color:var(--muted);font-size:1.03em;max-width:460px;margin-bottom:30px;line-height:1.7;}
+        .home-actions{display:flex;gap:12px;flex-wrap:wrap;}
+        .home-stats{display:flex;gap:36px;margin-top:48px;padding-top:32px;border-top:1px solid var(--border);flex-wrap:wrap;}
+        .stat-item{display:flex;flex-direction:column;}
+        .stat-num{font-size:2.1em;font-weight:900;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;}
+        .stat-lbl{font-size:0.78em;color:var(--muted);margin-top:4px;}
+        .feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:44px;}
+        .feat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px 22px;cursor:pointer;transition:all .22s;}
+        .feat-card:hover{border-color:rgba(201,162,39,.5);background:rgba(201,162,39,.04);transform:translateY(-3px);box-shadow:0 18px 42px rgba(0,0,0,.08);}
+        .feat-ic{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2em;margin-bottom:16px;}
+        .ic-gold  {background:rgba(201,162,39,.12);color:var(--gold);}
+        .ic-cyan  {background:rgba(8,145,178,.1);  color:var(--cyan);}
+        .ic-green {background:rgba(22,163,74,.1);   color:var(--green);}
+        .ic-red   {background:rgba(220,38,38,.1);   color:var(--red);}
+        .feat-card h3{font-size:.96em;font-weight:700;margin-bottom:6px;color:#000;}
+        .feat-card p {font-size:.8em;color:var(--muted);line-height:1.6;}
+        .feat-arrow{display:inline-flex;align-items:center;gap:5px;color:var(--gold);font-size:.77em;font-weight:600;margin-top:13px;}
+
+        /* ═══ PAGE 2 ═══ */
+        .diag-wrap{max-width:760px;}
+        .step-prog{display:flex;align-items:center;margin-bottom:32px;}
+        .sp-item{display:flex;align-items:center;gap:8px;}
+        .sp-dot{width:34px;height:34px;border-radius:50%;border:2px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:.78em;font-weight:700;color:var(--muted);background:#fff;transition:all .3s;flex-shrink:0;}
+        .sp-dot.active{border-color:var(--gold);color:var(--gold);box-shadow:0 0 0 4px rgba(201,162,39,.12);}
+        .sp-dot.done{background:var(--grad);border-color:transparent;color:#000;}
+        .sp-lbl{font-size:.73em;color:var(--muted);font-weight:500;}
+        .sp-lbl.active{color:var(--gold);font-weight:600;}
+        .sp-line{flex:1;height:2px;background:var(--border);margin:0 10px;transition:background .3s;}
+        .sp-line.done{background:var(--grad);}
+        .diag-step{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:30px;}
+        .step-h{font-size:1.04em;font-weight:700;margin-bottom:4px;color:#000;}
+        .step-p{color:var(--muted);font-size:.85em;margin-bottom:22px;}
+        .brand-row{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;}
+        .brand-tile{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px 8px;text-align:center;cursor:pointer;transition:all .2s;}
+        .brand-tile i{font-size:1.75em;display:block;margin-bottom:8px;color:var(--muted2);transition:color .2s;}
+        .brand-tile span{font-size:.8em;font-weight:600;color:var(--muted);}
+        .brand-tile:hover,.brand-tile.selected{border-color:var(--gold);background:rgba(201,162,39,.06);}
+        .brand-tile:hover i,.brand-tile.selected i{color:var(--gold);}
+        .brand-tile:hover span,.brand-tile.selected span{color:var(--gold-d);}
+        .cat-row{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;}
+        .cat-tile{background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px 8px;text-align:center;cursor:pointer;transition:all .2s;}
+        .cat-tile i{font-size:1.65em;display:block;margin-bottom:8px;}
+        .cat-tile span{font-size:.8em;font-weight:600;color:var(--muted);}
+        .cat-tile:hover{border-color:var(--border2);background:#f8f8f8;}
+        .cat-tile.selected{border-color:var(--gold);background:rgba(201,162,39,.06);}
+        [data-cat=screen]   i{color:#6366f1;}
+        [data-cat=battery]  i{color:var(--green);}
+        [data-cat=camera]   i{color:var(--cyan);}
+        [data-cat=speaker]  i{color:var(--yellow);}
+        [data-cat=software] i{color:var(--gold);}
+        .prob-list{display:flex;flex-direction:column;gap:8px;}
+        .prob-row{display:flex;align-items:center;gap:13px;padding:13px 17px;background:#fff;border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;font-size:.9em;color:var(--muted);}
+        .prob-row i{color:var(--gold);font-size:1em;width:17px;flex-shrink:0;}
+        .prob-row:hover{border-color:var(--gold);color:#000;background:rgba(201,162,39,.04);transform:translateX(4px);}
+        .guide-h{font-size:1.22em;font-weight:800;margin-bottom:14px;color:#000;}
+        .guide-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+        .gpill{display:flex;align-items:center;gap:7px;padding:6px 12px;border-radius:7px;font-size:.77em;border:1px solid;}
+        .gp-easy    {border-color:var(--green); color:var(--green); background:rgba(22,163,74,.07);}
+        .gp-moderate{border-color:var(--yellow);color:var(--yellow);background:rgba(217,119,6,.07);}
+        .gp-advanced{border-color:var(--red);   color:var(--red);   background:rgba(220,38,38,.07);}
+        .gp-default {border-color:var(--border2);color:var(--muted);background:#f5f5f5;}
+        .gp-cost    {border-color:var(--green); color:var(--green); background:rgba(22,163,74,.07);}
+        .tools-box{background:#fff;border:1px solid var(--border);border-radius:11px;padding:15px 17px;margin-bottom:18px;}
+        .box-lbl{font-size:.71em;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:10px;}
+        .tool-tags{display:flex;flex-wrap:wrap;gap:7px;}
+        .tool-tag{background:rgba(201,162,39,.08);border:1px solid rgba(201,162,39,.22);color:var(--gold-d);padding:4px 10px;border-radius:5px;font-size:.75em;}
+        .steps-list{margin-bottom:6px;}
+        .step-row{display:flex;gap:13px;margin-bottom:13px;align-items:flex-start;}
+        .step-num{width:25px;height:25px;border-radius:50%;background:var(--grad);color:#000;display:flex;align-items:center;justify-content:center;font-size:.71em;font-weight:800;flex-shrink:0;margin-top:2px;}
+        .step-txt{color:#333;font-size:.9em;line-height:1.65;}
+        .brand-note-box{background:rgba(8,145,178,.05);border:1px solid rgba(8,145,178,.2);border-radius:10px;padding:12px 15px;margin-top:16px;font-size:.85em;color:#0369a1;line-height:1.6;}
+        .brand-note-box strong{color:#0369a1;}
+        .back-btn,.restart-btn{display:inline-flex;align-items:center;gap:7px;background:transparent;border:1px solid var(--border2);color:var(--muted);padding:8px 15px;border-radius:8px;cursor:pointer;font-size:.81em;margin-bottom:17px;transition:all .18s;}
+        .back-btn:hover,.restart-btn:hover{border-color:var(--gold);color:var(--gold);}
+        .restart-btn{margin-top:20px;margin-bottom:0;}
+
+        /* ═══ PAGE 3 ═══ */
+        .tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:14px;}
+        .tool-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:21px;transition:all .2s;}
+        .tool-card:hover{border-color:rgba(201,162,39,.4);transform:translateY(-3px);box-shadow:0 14px 38px rgba(0,0,0,.08);}
+        .tool-ic-w{width:43px;height:43px;border-radius:11px;background:rgba(201,162,39,.1);display:flex;align-items:center;justify-content:center;margin-bottom:13px;}
+        .tool-ic-w i{font-size:1.15em;color:var(--gold);}
+        .tool-card h4{font-size:.9em;font-weight:700;margin-bottom:6px;color:#000;}
+        .tool-card p {font-size:.78em;color:var(--muted);line-height:1.55;}
+        .tool-price{display:inline-block;font-size:.74em;color:var(--green);background:rgba(22,163,74,.07);padding:3px 9px;border-radius:4px;margin-top:10px;border:1px solid rgba(22,163,74,.18);}
+
+        /* ═══ PAGE 4 ═══ */
+        .est-section{margin-bottom:30px;}
+        .est-step-lbl{display:flex;align-items:center;gap:10px;font-size:.9em;font-weight:700;color:#000;margin-bottom:14px;}
+        .est-step-num{width:26px;height:26px;border-radius:50%;background:var(--grad);color:#000;font-size:.74em;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+        /* Device cards */
+        .dev-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;}
+        .dev-card{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:0;text-align:center;cursor:pointer;transition:all .22s;overflow:hidden;}
+        .dev-card:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.09);}
+        .dev-card.active{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,162,39,.15);}
+        .dev-img{height:110px;display:flex;align-items:center;justify-content:center;font-size:2.8em;position:relative;overflow:hidden;}
+        .dev-apple  .dev-img{background:linear-gradient(160deg,#1d1d1f 0%,#3a3a3c 100%);}
+        .dev-samsung-s .dev-img{background:linear-gradient(160deg,#1428a0 0%,#2563eb 100%);}
+        .dev-samsung-a .dev-img{background:linear-gradient(160deg,#1e3a8a 0%,#3b82f6 100%);}
+        .dev-xiaomi .dev-img{background:linear-gradient(160deg,#b91c1c 0%,#ef4444 100%);}
+        .dev-android .dev-img{background:linear-gradient(160deg,#14532d 0%,#16a34a 100%);}
+        .dev-other  .dev-img{background:linear-gradient(160deg,#374151 0%,#6b7280 100%);}
+        .dev-img i{color:rgba(255,255,255,.9);filter:drop-shadow(0 2px 8px rgba(0,0,0,.3));}
+        .dev-card.active .dev-img i{color:#fff;}
+        .dev-info{padding:11px 8px 13px;}
+        .dev-name{font-size:.82em;font-weight:700;color:#000;margin-bottom:2px;}
+        .dev-sub{font-size:.68em;color:var(--muted);}
+        .dev-check{position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;background:var(--gold);display:none;align-items:center;justify-content:center;}
+        .dev-check i{font-size:.6em;color:#000;}
+        .dev-card.active .dev-check{display:flex;}
+
+        /* Repair type cards */
+        .rep-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+        .rep-card{background:var(--card);border:2px solid var(--border);border-radius:16px;padding:22px 10px 18px;text-align:center;cursor:pointer;transition:all .22s;position:relative;}
+        .rep-card:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.09);}
+        .rep-card.active{border-color:var(--gold);background:rgba(201,162,39,.04);box-shadow:0 0 0 3px rgba(201,162,39,.15);}
+        .rep-icon{font-size:2em;margin-bottom:11px;line-height:1;color:var(--muted2);transition:color .2s;}
+        .rep-card.active .rep-icon{color:var(--gold);}
+        .rep-name{font-size:.86em;font-weight:700;color:#000;margin-bottom:4px;}
+        .rep-sub{font-size:.7em;color:var(--muted);line-height:1.4;}
+        .rep-check{position:absolute;top:8px;right:8px;width:20px;height:20px;border-radius:50%;background:var(--gold);display:none;align-items:center;justify-content:center;}
+        .rep-check i{font-size:.6em;color:#000;}
+        .rep-card.active .rep-check{display:flex;}
+
+        /* Estimate button */
+        .est-btn-main{display:flex;align-items:center;justify-content:center;gap:10px;background:var(--grad);color:#000;border:none;border-radius:12px;padding:16px 40px;font-size:.95em;font-weight:800;cursor:pointer;transition:all .22s;margin-bottom:30px;}
+        .est-btn-main:hover{opacity:.86;transform:translateY(-2px);box-shadow:0 14px 34px rgba(201,162,39,.32);}
+
+        /* Result card */
+        .cost-result{background:#fff;border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.07);}
+        .cr-header{background:var(--sidebar);padding:24px 28px;display:flex;align-items:center;gap:16px;}
+        .cr-header-icon{width:50px;height:50px;border-radius:13px;background:rgba(201,162,39,.18);display:flex;align-items:center;justify-content:center;font-size:1.4em;color:var(--gold);flex-shrink:0;}
+        .cr-title{font-size:1.05em;font-weight:800;color:#fff;margin-bottom:3px;}
+        .cr-sub{font-size:.75em;color:#777;}
+        .cr-cols{display:grid;grid-template-columns:1fr 1fr;}
+        .cr-col{padding:26px 28px;}
+        .cr-col+.cr-col{border-left:1px solid var(--border);}
+        .cr-col-label{font-size:.68em;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+        .cr-diy .cr-col-label{color:var(--green);}
+        .cr-pro .cr-col-label{color:var(--gold);}
+        .cr-price{font-size:2.1em;font-weight:900;line-height:1;margin-bottom:3px;}
+        .cr-diy .cr-price{color:var(--green);}
+        .cr-pro .cr-price{color:var(--gold);}
+        .cr-price-sub{font-size:.74em;color:var(--muted);margin-bottom:18px;}
+        .cr-meta{display:flex;flex-direction:column;gap:8px;}
+        .cr-meta-row{display:flex;align-items:center;gap:9px;font-size:.83em;color:#444;}
+        .cr-meta-row i{color:var(--muted2);width:14px;font-size:.85em;flex-shrink:0;}
+        .cr-meta-row strong{color:#000;}
+        .cr-pro-perks{display:flex;flex-direction:column;gap:9px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);}
+        .cr-perk{display:flex;align-items:center;gap:9px;font-size:.8em;color:var(--muted);}
+        .cr-perk i{color:var(--gold);font-size:.8em;}
+        .cr-footer{padding:15px 28px;background:#fafafa;border-top:1px solid var(--border);font-size:.77em;color:var(--muted);display:flex;align-items:center;gap:8px;}
+        .cr-footer i{color:var(--gold);}
+
+        /* ═══ PAGE 5 ═══ */
+        .tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:13px;}
+        .tip-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:19px;display:flex;gap:13px;transition:border-color .2s;}
+        .tip-card:hover{border-color:var(--border2);}
+        .tip-ic{width:37px;height:37px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.93em;}
+        .t-red    .tip-ic{background:rgba(220,38,38,.1);  color:var(--red);}
+        .t-yellow .tip-ic{background:rgba(217,119,6,.1);  color:var(--yellow);}
+        .t-blue   .tip-ic{background:rgba(201,162,39,.1); color:var(--gold);}
+        .t-green  .tip-ic{background:rgba(22,163,74,.1);  color:var(--green);}
+        .tip-card h4{font-size:.88em;font-weight:700;margin-bottom:5px;color:#000;}
+        .tip-card p {font-size:.78em;color:var(--muted);line-height:1.55;}
+
+        /* ═══ PAGE 6 ═══ */
+        .about-intro{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;}
+        .about-tagline{background:var(--grad);border-radius:16px;padding:30px;display:flex;flex-direction:column;justify-content:flex-end;}
+        .about-tagline h2{font-size:1.7em;font-weight:900;color:#000;line-height:1.2;margin-bottom:8px;}
+        .about-tagline p{font-size:.85em;color:rgba(0,0,0,.65);line-height:1.6;}
+        .about-mission{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:28px;}
+        .about-mission h4{font-size:.78em;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--gold);margin-bottom:10px;}
+        .about-mission p{color:var(--muted);font-size:.88em;line-height:1.75;}
+        .process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px;}
+        .proc-step{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px 16px;text-align:center;}
+        .proc-num{width:36px;height:36px;border-radius:50%;background:var(--grad);color:#000;font-size:.8em;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 11px;}
+        .proc-step h4{font-size:.88em;font-weight:700;margin-bottom:5px;color:#000;}
+        .proc-step p{font-size:.76em;color:var(--muted);line-height:1.5;}
+        .fixlist-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:14px;}
+        .fixlist-section h4{font-size:.78em;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:14px;}
+        .fix-tags{display:flex;flex-wrap:wrap;gap:9px;}
+        .fix-tag{display:flex;align-items:center;gap:7px;padding:7px 13px;background:#fff;border:1px solid var(--border2);border-radius:8px;font-size:.8em;color:#333;}
+        .fix-tag i{color:var(--gold);font-size:.85em;}
+        .about-bottom{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+        .why-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;}
+        .why-card h4{font-size:.78em;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:13px;}
+        .why-row{display:flex;align-items:flex-start;gap:11px;margin-bottom:11px;}
+        .why-ic{width:30px;height:30px;border-radius:8px;background:rgba(201,162,39,.1);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:.8em;flex-shrink:0;}
+        .why-row h5{font-size:.84em;font-weight:700;margin-bottom:2px;color:#000;}
+        .why-row p{font-size:.77em;color:var(--muted);line-height:1.5;}
+        .contact-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;}
+        .contact-card h4{font-weight:700;margin-bottom:14px;color:#000;font-size:.78em;text-transform:uppercase;letter-spacing:.8px;}
+        .contact-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+        .contact-row i{color:var(--gold);width:16px;}
+        .contact-link{color:var(--gold);text-decoration:none;font-size:.88em;}
+        .contact-link:hover{text-decoration:underline;}
+        .contact-row span{color:var(--muted);font-size:.85em;}
+        .contact-note{color:var(--muted);font-size:.77em;margin-top:13px;line-height:1.6;border-top:1px solid var(--border);padding-top:11px;}
+        @media(max-width:900px){
+            .about-intro,.about-bottom{grid-template-columns:1fr;}
+            .process-grid{grid-template-columns:repeat(2,1fr);}
+        }
+
+        /* ── Shared ── */
+        .hidden{display:none!important;}
+        @keyframes fadeSlide{from{opacity:0;transform:translateY(7px);}to{opacity:1;transform:translateY(0);}}
+        .fade-in{animation:fadeSlide .26s ease forwards;}
+
+        @media(max-width:900px){
+            .topnav{padding:0 16px;height:56px;}
+            .nav-logo-wrap{margin-right:16px;}
+            .nav-item span{display:none;}
+            .nav-item{padding:8px 10px;}
+            .nav-right{display:none;}
+            .page{padding:26px 18px;}
+            .brand-row,.cat-row{grid-template-columns:repeat(3,1fr);}
+            .dev-grid{grid-template-columns:repeat(3,1fr);}
+            .rep-grid{grid-template-columns:repeat(3,1fr);}
+            .cr-cols{grid-template-columns:1fr;}
+            .cr-col+.cr-col{border-left:none;border-top:1px solid var(--border);}
+        }
+        @media(max-width:480px){
+            .brand-row,.cat-row{grid-template-columns:repeat(2,1fr);}
+            .dev-grid{grid-template-columns:repeat(2,1fr);}
+            .rep-grid{grid-template-columns:repeat(2,1fr);}
+            .home-h1{font-size:1.85em;}
+            .nav-item i{font-size:1em;}
+        }
+    </style>
+</head>
+<body>
+
+<div class="app">
+    <nav class="topnav">
+        <div class="nav-logo-wrap">
+            <div class="nav-logo-text">Zero 3</div>
+            <div class="nav-logo-sub">Software Specialists</div>
+        </div>
+        <div class="nav-links">
+            <div class="nav-item active" onclick="showPage(1,this)"><i class="fa-solid fa-house"></i><span>Home</span></div>
+            <div class="nav-item"        onclick="showPage(2,this)"><i class="fa-solid fa-stethoscope"></i><span>Diagnostic Tool</span></div>
+            <div class="nav-item"        onclick="showPage(3,this)"><i class="fa-solid fa-toolbox"></i><span>Tools &amp; Parts</span></div>
+            <div class="nav-item"        onclick="showPage(4,this)"><i class="fa-solid fa-calculator"></i><span>Cost Estimator</span></div>
+            <div class="nav-item"        onclick="showPage(5,this)"><i class="fa-solid fa-triangle-exclamation"></i><span>Tips &amp; Warnings</span></div>
+            <div class="nav-item"        onclick="showPage(6,this)"><i class="fa-solid fa-store"></i><span>About</span></div>
+        </div>
+        <div class="nav-right">
+            <a href="mailto:20233077@std.neu.edu.tr">20233077@std.neu.edu.tr</a>
+        </div>
+    </nav>
+
+    <main class="content">
+
+        <!-- PAGE 1 — HOME -->
+        <div id="pg1" class="page active">
+            <div class="home-hero">
+                <div class="home-badge"><i class="fa-solid fa-code"></i>&nbsp;Phone Software Specialists</div>
+                <h1 class="home-h1">Your Phone.<br><span class="grad-text">Fixed Right.</span></h1>
+                <p class="home-desc">Zero 3 specializes in phone software repair — boot loops, crashes, freezes, app failures, and firmware issues. No unnecessary part replacements, just expert software solutions.</p>
+                <div class="home-actions">
+                    <button class="btn-primary" onclick="showPage(2)"><i class="fa-solid fa-stethoscope"></i>Run Diagnostic</button>
+                    <button class="btn-outline"  onclick="showPage(4)"><i class="fa-solid fa-calculator"></i>View Pricing</button>
+                </div>
+                <div class="home-stats">
+                    <div class="stat-item"><span class="stat-num">500+</span><span class="stat-lbl">Phones Fixed</span></div>
+                    <div class="stat-item"><span class="stat-num">16</span><span class="stat-lbl">Issue Guides</span></div>
+                    <div class="stat-item"><span class="stat-num">5</span><span class="stat-lbl">Brands Supported</span></div>
+                    <div class="stat-item"><span class="stat-num">24h</span><span class="stat-lbl">Turnaround</span></div>
+                </div>
+            </div>
+            <div class="feat-grid">
+                <div class="feat-card" onclick="showPage(2)">
+                    <div class="feat-ic ic-gold"><i class="fa-solid fa-stethoscope"></i></div>
+                    <h3>Diagnostic Tool</h3>
+                    <p>Tell us your brand and what's wrong — get a tailored, step-by-step software fix guide instantly.</p>
+                    <div class="feat-arrow">Start Diagnostic <i class="fa-solid fa-arrow-right"></i></div>
+                </div>
+                <div class="feat-card" onclick="showPage(3)">
+                    <div class="feat-ic ic-cyan"><i class="fa-solid fa-toolbox"></i></div>
+                    <h3>Tools &amp; Parts</h3>
+                    <p>The software and hardware tools our technicians rely on, with prices and usage tips.</p>
+                    <div class="feat-arrow">Browse Tools <i class="fa-solid fa-arrow-right"></i></div>
+                </div>
+                <div class="feat-card" onclick="showPage(4)">
+                    <div class="feat-ic ic-green"><i class="fa-solid fa-calculator"></i></div>
+                    <h3>Cost Estimator</h3>
+                    <p>Get a clear price estimate before you walk in — no surprises, no hidden fees.</p>
+                    <div class="feat-arrow">Get Estimate <i class="fa-solid fa-arrow-right"></i></div>
+                </div>
+                <div class="feat-card" onclick="showPage(5)">
+                    <div class="feat-ic ic-red"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <h3>Tips &amp; Warnings</h3>
+                    <p>What to do — and what not to do — before bringing your phone in for repair.</p>
+                    <div class="feat-arrow">Read Tips <i class="fa-solid fa-arrow-right"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 2 — DIAGNOSTIC -->
+        <div id="pg2" class="page">
+            <div class="page-hdr">
+                <div class="page-badge"><i class="fa-solid fa-stethoscope"></i>&nbsp;Interactive Tool</div>
+                <h1 class="page-title">Diagnostic Tool</h1>
+                <p class="page-sub">Answer 3 quick questions and get a personalized, step-by-step repair guide.</p>
+            </div>
+            <div class="diag-wrap">
+                <div class="step-prog" id="stepProg">
+                    <div class="sp-item"><div class="sp-dot active" id="d1">1</div>&nbsp;<span class="sp-lbl active" id="dl1">Brand</span></div>
+                    <div class="sp-line" id="l1"></div>
+                    <div class="sp-item"><div class="sp-dot" id="d2">2</div>&nbsp;<span class="sp-lbl" id="dl2">Category</span></div>
+                    <div class="sp-line" id="l2"></div>
+                    <div class="sp-item"><div class="sp-dot" id="d3">3</div>&nbsp;<span class="sp-lbl" id="dl3">Problem</span></div>
+                    <div class="sp-line" id="l3"></div>
+                    <div class="sp-item"><div class="sp-dot" id="d4"><i class="fa-solid fa-check" style="font-size:.74em"></i></div>&nbsp;<span class="sp-lbl" id="dl4">Guide</span></div>
+                </div>
+                <div id="s1" class="diag-step fade-in">
+                    <h3 class="step-h">Select your phone brand</h3>
+                    <p class="step-p">This tailors the fix steps and notes to your specific device.</p>
+                    <div class="brand-row">
+                        <div class="brand-tile" onclick="pickBrand('Samsung',this)"><i class="fa-brands fa-android"></i><span>Samsung</span></div>
+                        <div class="brand-tile" onclick="pickBrand('iPhone',this)"><i class="fa-brands fa-apple"></i><span>iPhone</span></div>
+                        <div class="brand-tile" onclick="pickBrand('Xiaomi',this)"><i class="fa-solid fa-mobile-screen-button"></i><span>Xiaomi</span></div>
+                        <div class="brand-tile" onclick="pickBrand('Huawei',this)"><i class="fa-solid fa-mobile"></i><span>Huawei</span></div>
+                        <div class="brand-tile" onclick="pickBrand('Other',this)"><i class="fa-solid fa-ellipsis"></i><span>Other</span></div>
+                    </div>
+                </div>
+                <div id="s2" class="diag-step hidden">
+                    <button class="back-btn" onclick="goStep(1)"><i class="fa-solid fa-arrow-left"></i>Back</button>
+                    <h3 class="step-h">What type of problem?</h3>
+                    <p class="step-p">Choose the category that best describes the issue.</p>
+                    <div class="cat-row">
+                        <div class="cat-tile" data-cat="screen"   onclick="pickCat('screen',this)"><i class="fa-solid fa-tablet-screen-button"></i><span>Screen</span></div>
+                        <div class="cat-tile" data-cat="battery"  onclick="pickCat('battery',this)"><i class="fa-solid fa-battery-half"></i><span>Battery</span></div>
+                        <div class="cat-tile" data-cat="camera"   onclick="pickCat('camera',this)"><i class="fa-solid fa-camera"></i><span>Camera</span></div>
+                        <div class="cat-tile" data-cat="speaker"  onclick="pickCat('speaker',this)"><i class="fa-solid fa-volume-high"></i><span>Speaker / Mic</span></div>
+                        <div class="cat-tile" data-cat="software" onclick="pickCat('software',this)"><i class="fa-solid fa-code"></i><span>Software</span></div>
+                    </div>
+                </div>
+                <div id="s3" class="diag-step hidden">
+                    <button class="back-btn" onclick="goStep(2)"><i class="fa-solid fa-arrow-left"></i>Back</button>
+                    <h3 class="step-h" id="s3title">Select the specific problem</h3>
+                    <p class="step-p">Choose the option that most closely matches what you are seeing.</p>
+                    <div class="prob-list" id="probList"></div>
+                </div>
+                <div id="s4" class="diag-step hidden">
+                    <button class="back-btn" onclick="goStep(3)"><i class="fa-solid fa-arrow-left"></i>Back</button>
+                    <div id="guideOut"></div>
+                    <button class="restart-btn" onclick="restart()"><i class="fa-solid fa-rotate-left"></i>Start Over</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 3 — TOOLS -->
+        <div id="pg3" class="page">
+            <div class="page-hdr">
+                <div class="page-badge"><i class="fa-solid fa-toolbox"></i>&nbsp;Equipment</div>
+                <h1 class="page-title">Tools &amp; Parts Reference</h1>
+                <p class="page-sub">What our technicians use and when each tool matters.</p>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card"><div class="tool-ic-w"><i class="fa-solid fa-screwdriver"></i></div><h4>Precision Screwdriver Set</h4><p>Pentalobe (iPhone bottom screws), Phillips #000 (interior screws), Torx T3/T4 (Samsung), and tri-wing bits. Wrong bit = stripped head.</p><span class="tool-price">$8 – $25</span></div>
+                <div class="tool-card"><div class="tool-ic-w"><i class="fa-solid fa-hand-pointer"></i></div><h4>Plastic Spudger Set</h4><p>Non-conductive prying tools for lifting ribbon cables, releasing locking clips, and separating housings without scratching metal.</p><span class="tool-price">$3 – $10</span></div>
+                <div class="tool-card"><div class="tool-ic-w"><i class="fa-solid fa-circle-dot"></i></div><h4>Suction Cup Handle</h4><p>Attaches to the display glass and applies steady lifting force while you insert plastic picks along the frame edge.</p><span class="tool-price">$2 – $8</span></div>
+                <div class="tool-card"><div class="tool-ic-w"><i class="fa-solid fa-fire"></i></div><h4>Heat Gun / iOpener Pad</h4><p>Softens the adhesive seal around the phone perimeter. A hair dryer works in a pinch, but a heat gun gives more precise, controllable temperature.</p><span class="tool-price">$15 – $50</span></div>
+                <div class="tool-card"><div class="tool-ic-w"><i class="fa-solid fa-scissors"></i></div><h4>ESD-Safe Tweezers</h4><p>Anti-static tweezers for handling tiny screws, ribbon cable connectors, and motherboard components without causing static discharge damage.</p><span class="tool-price">$5 – $15</span></div>
+                <div class="tool-card"><div class="tool-ic-w"><i class="fa-solid fa-credit-card"></i></div><h4>Plastic Opening Picks</h4><p>Thin, flexible picks that slide around the phone frame to release adhesive. Place 5–6 picks simultaneously to hold your progress as you work.</p><span class="tool-price">$2 – $5</span></div>
+                <div class="tool-card"><div class="tool-ic-w"><i class="fa-solid fa-magnet"></i></div><h4>Magnetic Project Mat</h4><p>Silicone mat with labeled zones for keeping screws in order. The magnetic surface prevents tiny screws from rolling off the workbench.</p><span class="tool-price">$6 – $18</span></div>
+                <div class="tool-card"><div class="tool-ic-w"><i class="fa-solid fa-droplet"></i></div><h4>B-7000 Adhesive</h4><p>Semi-flexible, waterproof glue used to re-seal screens and back panels after repair. Full cure strength is reached after 24 hours.</p><span class="tool-price">$3 – $8</span></div>
+                <div class="tool-card"><div class="tool-ic-w"><i class="fa-solid fa-bolt"></i></div><h4>Multimeter</h4><p>Tests charging ports, battery voltage, and short circuits on the motherboard. Essential for advanced troubleshooting and board-level repair.</p><span class="tool-price">$15 – $40</span></div>
+                <div class="tool-card"><div class="tool-ic-w"><i class="fa-solid fa-wind"></i></div><h4>Compressed Air Can</h4><p>Clears speaker grilles, charging ports, and camera lenses quickly without disassembly. Always the first step for audio and camera issues.</p><span class="tool-price">$5 – $12</span></div>
+            </div>
+        </div>
+
+        <!-- PAGE 4 — COST ESTIMATOR -->
+        <div id="pg4" class="page">
+            <div class="page-hdr">
+                <div class="page-badge"><i class="fa-solid fa-calculator"></i>&nbsp;Pricing</div>
+                <h1 class="page-title">Repair Cost Estimator</h1>
+                <p class="page-sub">Pick your device and repair type — get a transparent price breakdown instantly.</p>
+            </div>
+
+            <!-- Step 1: Device -->
+            <div class="est-section">
+                <div class="est-step-lbl"><span class="est-step-num">1</span>Select Your Device</div>
+                <div class="dev-grid">
+                    <div class="dev-card dev-apple active" data-dev="iphone-flagship" onclick="selectDev(this)">
+                        <div class="dev-img" style="position:relative;">
+                            <i class="fa-brands fa-apple"></i>
+                            <div class="dev-check"><i class="fa-solid fa-check"></i></div>
+                        </div>
+                        <div class="dev-info">
+                            <div class="dev-name">iPhone 14 / 15</div>
+                            <div class="dev-sub">Pro · Pro Max</div>
+                        </div>
+                    </div>
+                    <div class="dev-card dev-apple" data-dev="iphone-mid" onclick="selectDev(this)">
+                        <div class="dev-img" style="position:relative;">
+                            <i class="fa-brands fa-apple"></i>
+                            <div class="dev-check"><i class="fa-solid fa-check"></i></div>
+                        </div>
+                        <div class="dev-info">
+                            <div class="dev-name">iPhone 11–13</div>
+                            <div class="dev-sub">Standard · Plus</div>
+                        </div>
+                    </div>
+                    <div class="dev-card dev-samsung-s" data-dev="samsung-s" onclick="selectDev(this)">
+                        <div class="dev-img" style="position:relative;">
+                            <i class="fa-solid fa-mobile-screen"></i>
+                            <div class="dev-check"><i class="fa-solid fa-check"></i></div>
+                        </div>
+                        <div class="dev-info">
+                            <div class="dev-name">Samsung S</div>
+                            <div class="dev-sub">Galaxy S Series</div>
+                        </div>
+                    </div>
+                    <div class="dev-card dev-samsung-a" data-dev="samsung-a" onclick="selectDev(this)">
+                        <div class="dev-img" style="position:relative;">
+                            <i class="fa-solid fa-mobile"></i>
+                            <div class="dev-check"><i class="fa-solid fa-check"></i></div>
+                        </div>
+                        <div class="dev-info">
+                            <div class="dev-name">Samsung A</div>
+                            <div class="dev-sub">Galaxy A Series</div>
+                        </div>
+                    </div>
+                    <div class="dev-card dev-xiaomi" data-dev="xiaomi" onclick="selectDev(this)">
+                        <div class="dev-img" style="position:relative;">
+                            <i class="fa-solid fa-mobile-screen-button"></i>
+                            <div class="dev-check"><i class="fa-solid fa-check"></i></div>
+                        </div>
+                        <div class="dev-info">
+                            <div class="dev-name">Xiaomi</div>
+                            <div class="dev-sub">Redmi · POCO</div>
+                        </div>
+                    </div>
+                    <div class="dev-card dev-android" data-dev="other" onclick="selectDev(this)">
+                        <div class="dev-img" style="position:relative;">
+                            <i class="fa-brands fa-android"></i>
+                            <div class="dev-check"><i class="fa-solid fa-check"></i></div>
+                        </div>
+                        <div class="dev-info">
+                            <div class="dev-name">Other Android</div>
+                            <div class="dev-sub">All brands</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Repair type -->
+            <div class="est-section">
+                <div class="est-step-lbl"><span class="est-step-num">2</span>Select Repair Type</div>
+                <div class="rep-grid">
+                    <div class="rep-card active" data-rep="screen" onclick="selectRep(this)">
+                        <div class="rep-check"><i class="fa-solid fa-check"></i></div>
+                        <div class="rep-icon"><i class="fa-solid fa-tablet-screen-button"></i></div>
+                        <div class="rep-name">Screen</div>
+                        <div class="rep-sub">Cracked, black, flickering display</div>
+                    </div>
+                    <div class="rep-card" data-rep="battery" onclick="selectRep(this)">
+                        <div class="rep-check"><i class="fa-solid fa-check"></i></div>
+                        <div class="rep-icon"><i class="fa-solid fa-battery-half"></i></div>
+                        <div class="rep-name">Battery</div>
+                        <div class="rep-sub">Draining fast, won't charge</div>
+                    </div>
+                    <div class="rep-card" data-rep="port" onclick="selectRep(this)">
+                        <div class="rep-check"><i class="fa-solid fa-check"></i></div>
+                        <div class="rep-icon"><i class="fa-solid fa-plug"></i></div>
+                        <div class="rep-name">Charging Port</div>
+                        <div class="rep-sub">Loose, broken USB-C / Lightning</div>
+                    </div>
+                    <div class="rep-card" data-rep="camera" onclick="selectRep(this)">
+                        <div class="rep-check"><i class="fa-solid fa-check"></i></div>
+                        <div class="rep-icon"><i class="fa-solid fa-camera"></i></div>
+                        <div class="rep-name">Camera</div>
+                        <div class="rep-sub">Blurry, won't open, black view</div>
+                    </div>
+                    <div class="rep-card" data-rep="speaker" onclick="selectRep(this)">
+                        <div class="rep-check"><i class="fa-solid fa-check"></i></div>
+                        <div class="rep-icon"><i class="fa-solid fa-volume-high"></i></div>
+                        <div class="rep-name">Speaker / Mic</div>
+                        <div class="rep-sub">No sound, muffled, echo on calls</div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="est-btn-main" onclick="calcCost()">
+                <i class="fa-solid fa-magnifying-glass-dollar"></i> Get Estimate
+            </button>
+
+            <!-- Result -->
+            <div id="costOut" class="cost-result hidden">
+                <div class="cr-header">
+                    <div class="cr-header-icon" id="crIcon"><i class="fa-brands fa-apple"></i></div>
+                    <div>
+                        <div class="cr-title" id="crTitle">iPhone 14 / 15 — Screen Repair</div>
+                        <div class="cr-sub">Price estimate · Zero 3 Software Specialists</div>
+                    </div>
+                </div>
+                <div class="cr-cols">
+                    <div class="cr-col cr-diy">
+                        <div class="cr-col-label"><i class="fa-solid fa-wrench"></i>DIY Repair</div>
+                        <div class="cr-price" id="crDiyTotal">—</div>
+                        <div class="cr-price-sub">Estimated total (parts + basics)</div>
+                        <div class="cr-meta">
+                            <div class="cr-meta-row"><i class="fa-solid fa-tag"></i><span>Parts only: <strong id="crDiyPart">—</strong></span></div>
+                            <div class="cr-meta-row"><i class="fa-solid fa-gauge-high"></i><span>Difficulty: <strong id="crDiff">—</strong></span></div>
+                            <div class="cr-meta-row"><i class="fa-solid fa-clock"></i><span>Time: <strong id="crTime">—</strong></span></div>
+                        </div>
+                    </div>
+                    <div class="cr-col cr-pro">
+                        <div class="cr-col-label"><i class="fa-solid fa-store"></i>Zero 3 Professional</div>
+                        <div class="cr-price" id="crProTotal">—</div>
+                        <div class="cr-price-sub">All-inclusive · no hidden fees</div>
+                        <div class="cr-meta">
+                            <div class="cr-meta-row"><i class="fa-solid fa-clock"></i><span>Turnaround: <strong>Same day – 3 days</strong></span></div>
+                        </div>
+                        <div class="cr-pro-perks">
+                            <div class="cr-perk"><i class="fa-solid fa-check"></i>Free diagnosis before we start</div>
+                            <div class="cr-perk"><i class="fa-solid fa-check"></i>Data safety guaranteed</div>
+                            <div class="cr-perk"><i class="fa-solid fa-check"></i>30-day repair warranty</div>
+                            <div class="cr-perk"><i class="fa-solid fa-check"></i>OEM-grade parts only</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cr-footer">
+                    <i class="fa-solid fa-circle-info"></i>
+                    Prices are estimates. Final cost confirmed after our free in-store diagnosis. Walk-ins welcome.
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE 5 — TIPS -->
+        <div id="pg5" class="page">
+            <div class="page-hdr">
+                <div class="page-badge"><i class="fa-solid fa-triangle-exclamation"></i>&nbsp;Safety First</div>
+                <h1 class="page-title">Tips &amp; Warnings</h1>
+                <p class="page-sub">Read this before attempting any fix — it protects your data, your hardware, and your safety.</p>
+            </div>
+            <div class="tips-grid">
+                <div class="tip-card t-red"><div class="tip-ic"><i class="fa-solid fa-plug-circle-xmark"></i></div><div><h4>Disconnect the Battery First</h4><p>Always unplug the battery connector before touching any other component. A live battery can short-circuit, erase data, or cause a thermal event if probed accidentally.</p></div></div>
+                <div class="tip-card t-yellow"><div class="tip-ic"><i class="fa-solid fa-file-contract"></i></div><div><h4>Opening Voids Your Warranty</h4><p>Disassembling the device typically voids the manufacturer warranty. If your phone is still covered, contact the manufacturer or carrier first — the repair may be free.</p></div></div>
+                <div class="tip-card t-yellow"><div class="tip-ic"><i class="fa-solid fa-bolt"></i></div><div><h4>Ground Yourself Against Static</h4><p>A single static discharge can permanently destroy logic board components. Touch a grounded metal surface or wear an ESD wrist strap before handling any PCB or cable.</p></div></div>
+                <div class="tip-card t-red"><div class="tip-ic"><i class="fa-solid fa-fire-flame-curved"></i></div><div><h4>Never Puncture a Battery</h4><p>Lithium-ion batteries release toxic gases and can ignite if bent, pierced, or crushed. Use only plastic tools near the battery — never a metal spudger or screwdriver.</p></div></div>
+                <div class="tip-card t-blue"><div class="tip-ic"><i class="fa-solid fa-camera"></i></div><div><h4>Photograph Every Step</h4><p>Take photos at each stage before removing screws or cables. It is very easy to forget cable routing or which screw length belongs in which hole when reassembling.</p></div></div>
+                <div class="tip-card t-blue"><div class="tip-ic"><i class="fa-solid fa-temperature-high"></i></div><div><h4>Apply Heat in Short Bursts</h4><p>Heat the frame for 30–60 seconds at a time only. Overheating can damage the OLED panel, degrade battery cells, or melt plastic clips. Keep temperature below 80 °C.</p></div></div>
+                <div class="tip-card t-green"><div class="tip-ic"><i class="fa-solid fa-floppy-disk"></i></div><div><h4>Back Up Before You Start</h4><p>Back up to iCloud, Google Drive, or a computer before any repair. A repair can go wrong, and restoring from a backup is far easier than losing everything.</p></div></div>
+                <div class="tip-card t-green"><div class="tip-ic"><i class="fa-solid fa-layer-group"></i></div><div><h4>Keep Screws Organized</h4><p>Screws are often different lengths. Mixing them up causes cracked housings or short circuits. Use a magnetic mat with labeled sections, or tape screws to paper with notes.</p></div></div>
+            </div>
+        </div>
+
+        <!-- PAGE 6 — ABOUT -->
+        <div id="pg6" class="page">
+            <div class="page-hdr">
+                <div class="page-badge"><i class="fa-solid fa-store"></i>&nbsp;Our Store</div>
+                <h1 class="page-title">About Zero 3</h1>
+                <p class="page-sub">A dedicated software repair shop — no hardware upsells, no guesswork.</p>
+            </div>
+
+            <div class="about-intro">
+                <div class="about-tagline">
+                    <h2>Software problems,<br>solved fast.</h2>
+                    <p>We built Zero 3 around one idea: most phone problems don't need new parts — they need someone who actually knows the software.</p>
+                </div>
+                <div class="about-mission">
+                    <h4>Our Mission</h4>
+                    <p>Zero 3 exists to give phone owners an honest alternative. Too many shops replace hardware when the real problem is a corrupted OS, a stuck boot process, or a bad update. We diagnose the software first — and in most cases, that's all it takes. No unnecessary costs, no lost data, no waiting days for parts. Just a working phone, handed back to you fast.</p>
+                </div>
+            </div>
+
+            <div class="process-grid">
+                <div class="proc-step">
+                    <div class="proc-num">1</div>
+                    <h4>Drop In</h4>
+                    <p>Walk in with your phone. No appointment needed for most software issues.</p>
+                </div>
+                <div class="proc-step">
+                    <div class="proc-num">2</div>
+                    <h4>Free Diagnosis</h4>
+                    <p>We identify the root cause — software, firmware, or OS — before quoting anything.</p>
+                </div>
+                <div class="proc-step">
+                    <div class="proc-num">3</div>
+                    <h4>Clean Fix</h4>
+                    <p>We apply the precise fix: factory reset, firmware flash, repair, or recovery.</p>
+                </div>
+                <div class="proc-step">
+                    <div class="proc-num">4</div>
+                    <h4>Pick Up</h4>
+                    <p>Most software fixes are done same day. We test everything before you leave.</p>
+                </div>
+            </div>
+
+            <div class="fixlist-section">
+                <h4>What We Fix</h4>
+                <div class="fix-tags">
+                    <span class="fix-tag"><i class="fa-solid fa-spinner"></i>Boot loops</span>
+                    <span class="fix-tag"><i class="fa-solid fa-snowflake"></i>Frozen / lagging phone</span>
+                    <span class="fix-tag"><i class="fa-solid fa-circle-exclamation"></i>App crashes</span>
+                    <span class="fix-tag"><i class="fa-solid fa-rotate"></i>Failed OS updates</span>
+                    <span class="fix-tag"><i class="fa-solid fa-microchip"></i>Firmware flash &amp; recovery</span>
+                    <span class="fix-tag"><i class="fa-solid fa-floppy-disk"></i>Data backup &amp; transfer</span>
+                    <span class="fix-tag"><i class="fa-solid fa-lock"></i>Factory reset &amp; unlock</span>
+                    <span class="fix-tag"><i class="fa-solid fa-wifi"></i>Network &amp; connectivity issues</span>
+                    <span class="fix-tag"><i class="fa-solid fa-shield-halved"></i>Virus &amp; malware removal</span>
+                    <span class="fix-tag"><i class="fa-solid fa-code"></i>System corruption repair</span>
+                    <span class="fix-tag"><i class="fa-brands fa-android"></i>Samsung / Xiaomi / Huawei ROMs</span>
+                    <span class="fix-tag"><i class="fa-brands fa-apple"></i>iPhone iOS restore &amp; DFU</span>
+                </div>
+            </div>
+
+            <div class="about-bottom">
+                <div class="why-card">
+                    <h4>Why Zero 3</h4>
+                    <div class="why-row">
+                        <div class="why-ic"><i class="fa-solid fa-magnifying-glass"></i></div>
+                        <div><h5>Software-First Diagnosis</h5><p>We always check the software before recommending hardware. Most issues don't need a single part replaced.</p></div>
+                    </div>
+                    <div class="why-row">
+                        <div class="why-ic"><i class="fa-solid fa-shield-halved"></i></div>
+                        <div><h5>Data Safety Guaranteed</h5><p>We back up your data before touching anything. You leave with your phone and everything on it.</p></div>
+                    </div>
+                    <div class="why-row">
+                        <div class="why-ic"><i class="fa-solid fa-clock"></i></div>
+                        <div><h5>Same-Day Turnaround</h5><p>Most software fixes take under 2 hours. We don't hold your phone overnight unless absolutely necessary.</p></div>
+                    </div>
+                    <div class="why-row">
+                        <div class="why-ic"><i class="fa-solid fa-tags"></i></div>
+                        <div><h5>Transparent Pricing</h5><p>You see the cost before we start. No surprise fees, no parts you didn't ask for.</p></div>
+                    </div>
+                </div>
+                <div class="contact-card">
+                    <h4>Contact &amp; Hours</h4>
+                    <div class="contact-row"><i class="fa-solid fa-envelope"></i><a href="mailto:20233077@std.neu.edu.tr" class="contact-link">20233077@std.neu.edu.tr</a></div>
+                    <div class="contact-row"><i class="fa-solid fa-clock"></i><span>Mon – Sat &nbsp;·&nbsp; 09:00 – 20:00</span></div>
+                    <div class="contact-row"><i class="fa-solid fa-sun"></i><span>Sunday &nbsp;·&nbsp; 10:00 – 17:00</span></div>
+                    <div class="contact-row"><i class="fa-brands fa-android"></i><span>Samsung · iPhone · Xiaomi · Huawei · Other</span></div>
+                    <p class="contact-note">Walk-ins welcome. For complex software issues, email us first — we'll confirm availability and give you a quick pre-assessment before you come in.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<script>
+function showPage(n, navEl) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const pg = document.getElementById('pg' + n);
+    pg.classList.add('active');
+    pg.style.animation = 'none';
+    void pg.offsetWidth;
+    pg.style.animation = '';
+    document.querySelectorAll('.nav-item').forEach(x => x.classList.remove('active'));
+    (navEl || document.querySelectorAll('.nav-item')[n - 1]).classList.add('active');
+    document.querySelector('.content').scrollTop = 0;
+}
+
+let brand = '', cat = '';
+
+const problems = {
+    screen:   [{key:'screen-cracked', icon:'fa-mobile-screen-button',label:'Cracked or shattered screen'},
+               {key:'screen-flicker', icon:'fa-wave-square',          label:'Screen flickering or showing lines'},
+               {key:'screen-black',   icon:'fa-circle',               label:'Screen is completely black (phone is on)'},
+               {key:'screen-touch',   icon:'fa-hand-pointer',         label:'Touchscreen not responding'}],
+    battery:  [{key:'battery-drains', icon:'fa-battery-quarter',      label:'Battery drains too fast'},
+               {key:'battery-charge', icon:'fa-plug-circle-xmark',    label:'Phone will not charge'},
+               {key:'battery-heat',   icon:'fa-temperature-high',     label:'Phone overheating'}],
+    camera:   [{key:'camera-blurry',  icon:'fa-eye-slash',            label:'Photos are blurry or out of focus'},
+               {key:'camera-open',    icon:'fa-ban',                  label:'Camera app will not open or crashes'},
+               {key:'camera-black',   icon:'fa-circle',               label:'Camera viewfinder shows black screen'}],
+    speaker:  [{key:'speaker-nosound',icon:'fa-volume-xmark',         label:'No sound from speaker'},
+               {key:'speaker-muffled',icon:'fa-volume-low',           label:'Sound is muffled or distorted'},
+               {key:'speaker-echo',   icon:'fa-rotate',               label:'Echo or feedback during calls'}],
+    software: [{key:'sw-logo',        icon:'fa-spinner',              label:'Phone stuck on boot logo'},
+               {key:'sw-freeze',      icon:'fa-snowflake',            label:'Phone freezing or lagging badly'},
+               {key:'sw-crash',       icon:'fa-circle-exclamation',   label:'Apps keep crashing'}],
+};
+
+const catTitles = {
+    screen:'What is wrong with the screen?', battery:'What is the battery doing?',
+    camera:'What is the camera problem?',    speaker:'What audio issue are you experiencing?',
+    software:'What software behaviour are you seeing?',
+};
+
+const guides = {
+    'screen-cracked':{
+        title:'Cracked Screen Replacement',diff:'Moderate',time:'60–90 min',cost:'$25–$120 (part only)',
+        tools:['Pentalobe / Phillips screwdriver','Suction cup','Plastic spudger','Heat gun or hair dryer','Plastic opening picks','ESD tweezers','B-7000 adhesive'],
+        steps:['Back up all data, then power the phone off completely and remove the SIM tray.',
+               'Apply heat along the bottom edge of the phone for 30–45 seconds to soften the adhesive seal.',
+               'Press the suction cup firmly to the bottom of the display and pull upward steadily while inserting a plastic pick into the gap that opens.',
+               'Slide 4–5 picks around the full perimeter. Work slowly — avoid the top edge on iPhones (Face ID sensor) and sides with volume/power buttons.',
+               'Open the phone like a book, hinging at the top. Never yank the screen away; ribbon cables are still attached.',
+               'Disconnect the battery connector immediately — this is non-negotiable before touching anything else inside.',
+               'Unscrew the display bracket and carefully disconnect the 2–3 screen ribbon cable connectors.',
+               'Transfer accessories to the new screen: earpiece speaker, proximity sensor bracket, and front camera module (keep all original screws).',
+               'Connect the new screen cables, refit the bracket, and reconnect the battery. Test touch, brightness, and front camera before sealing.',
+               'Apply a thin bead of B-7000 along the inner frame, press the screen firmly, and clamp or tape until cured.'],
+        notes:{Samsung:'Galaxy S and A series use very strong adhesive — heat to 65–70 °C is usually required. Rear glass often separates before the screen on S-series.',iPhone:'iPhones use Pentalobe screws at the bottom. Face ID is paired to the original logic board and cannot be transferred; do not attempt to move it.',Xiaomi:'Most Xiaomi models glue the back panel rather than the screen. Remove the back cover first to expose the internal screw frame before lifting the display.',Huawei:'Huawei uses strong adhesive comparable to Samsung. Display connectors are often near the center — avoid creasing ribbon cables when lifting.',Other:'Find a teardown video for your exact model on iFixit or YouTube before starting. Screw count and cable routing vary widely across brands.'}
+    },
+    'screen-flicker':{
+        title:'Screen Flickering — Diagnosis & Fix',diff:'Easy to Moderate',time:'15–60 min',cost:'$0 (software) / $25–$100 (hardware)',
+        tools:['None for software steps','Screwdriver set (if hardware needed)','Plastic spudger'],
+        steps:['Restart the phone — many flickering issues are caused by a temporary software glitch and clear immediately after a reboot.',
+               'Raise screen brightness above 30%. AMOLED displays use PWM dimming that produces visible flicker at low brightness on some models.',
+               'Check whether flickering only occurs in one specific app. If so, that app is the cause — update or uninstall it.',
+               'Boot into Safe Mode (hold Power, long-press "Power Off," tap Safe Mode on Android). If flickering stops, a third-party app is responsible.',
+               'Update the phone\'s system software — firmware bugs affecting display drivers are commonly patched in OTA updates.',
+               'Disable Force GPU Rendering in Developer Options if it is enabled, as it can cause visual rendering glitches on certain devices.',
+               'If flickering persists in Safe Mode, the fault is hardware — most likely a loose display ribbon cable, often from a previous drop.',
+               'Open the device, disconnect the display cable connector, inspect for damage, and firmly reseat it until it clicks fully into the socket.',
+               'If the panel has visible pressure marks or cracks behind the glass, the entire display module needs replacement.'],
+        notes:{Samsung:'Green tint or low-brightness flicker is a documented issue on certain Galaxy AMOLED models. Check Samsung\'s update channel for a display firmware patch before opening the device.',iPhone:'Flickering after a screen replacement almost always means the replacement panel is low quality. Use OEM-grade or genuine pulled displays for reliable results.',Xiaomi:'Ensure "Adaptive refresh rate" is enabled in MIUI Display settings — a fixed refresh rate can cause stuttering on variable-rate panels.',Huawei:'Check EMUI display settings for any motion smoothing or refresh rate options that may conflict with the panel\'s native rate.',Other:''}
+    },
+    'screen-black':{
+        title:'Black Screen — Diagnosis & Fix',diff:'Easy to Advanced',time:'10–90 min',cost:'$0–$80',
+        tools:['Charging cable','Screwdriver set (if hardware needed)','Plastic spudger'],
+        steps:['Confirm the phone is actually on: call it from another phone or press Volume Up. Vibration or a ring tone means the screen — not the phone — is the problem.',
+               'Force restart: hold Power + Volume Down for 10–15 seconds (Android) or Side + Volume Down (iPhone). This resolves the majority of black-screen cases instantly.',
+               'If force restart fails, plug into a charger for 15 minutes — the battery may be fully depleted even if it previously showed charge.',
+               'Connect to a computer via USB and check if the phone is detected. Detection means the logic board is alive; the display or its connection is at fault.',
+               'Boot into Recovery Mode to check whether the screen works in that environment (brightness defaults to full in Recovery).',
+               'If Recovery shows a display but normal mode is black, perform a factory reset from Recovery as a final software step.',
+               'If black in all modes, open the device and firmly reseat the display ribbon cable connector — a loose connection after a drop is the most common hardware cause.',
+               'Test with a known-good replacement screen if one is available. If the replacement works, the original display panel has failed.',
+               'If a replacement screen is also black, the fault is likely in the display power IC on the motherboard — professional micro-soldering is required.'],
+        notes:{Samsung:'Some Galaxy models include a service menu at *#0*# that lets you test individual display components when the panel is only partially functional.',iPhone:'A black screen with visible backlight (faint glow in a dark room) indicates a broken LCD layer — the full display module needs replacement.',Xiaomi:'Black screen after a firmware update on Xiaomi usually means a failed flash. Use Mi Flash Tool to re-flash the stock ROM via a computer.',Huawei:'Huawei phones stuck on black after an Android update can sometimes be recovered using HiSuite software on a Windows PC.',Other:''}
+    },
+    'screen-touch':{
+        title:'Touchscreen Not Responding',diff:'Easy to Moderate',time:'10–60 min',cost:'$0–$60',
+        tools:['Microfiber cloth','Screwdriver set (if hardware needed)','Replacement screen (if digitizer failed)'],
+        steps:['Clean the screen with a dry microfiber cloth. Oils, moisture, and screen protector air bubbles all reduce capacitive touch sensitivity.',
+               'Remove any thick, cracked, or improperly installed screen protector — some third-party tempered glass protectors interfere with the touch layer.',
+               'Restart the phone — a single runaway process can lock the touch digitizer in some firmware versions.',
+               'Test if touch works at the PIN entry screen during boot. If it does, the issue is inside your running OS, not the hardware.',
+               'Clear the cache partition from Recovery mode to resolve corrupted system cache causing touch failures.',
+               'If only part of the screen is unresponsive (a dead zone), the digitizer layer is physically damaged — full screen replacement is required.',
+               'Check for moisture: even trace water inside the digitizer connector causes touch failure. Allow the phone to dry in a warm, ventilated area for 24 hours.',
+               'Open the device and firmly reseat the display connector. A partially-seated connector can cause intermittent touch failure across the entire panel.',
+               'If reseating fails, the touch IC or digitizer has permanently failed. Full display module replacement will restore function.'],
+        notes:{Samsung:'Samsung has a built-in Touch Sensitivity mode under Settings > Display that improves response when using a screen protector.',iPhone:'iPhone 6s and 7 models are known for "touch disease" — a touch IC failure caused by board flex. This requires professional micro-soldering to fix properly.',Xiaomi:'Check MIUI\'s Glove Mode setting in Display — it may be misconfigured and interfering with normal touch accuracy.',Huawei:'',Other:''}
+    },
+    'battery-drains':{
+        title:'Battery Draining Too Fast',diff:'Easy',time:'20–40 min',cost:'$0 (settings) / $10–$30 (replacement)',
+        tools:['No tools for software steps','Screwdriver set + spudger (for battery swap)'],
+        steps:['Check battery health: iPhone — Settings > Battery > Battery Health. Android — install AccuBattery or check Settings > Battery > Battery Health if your OS supports it.',
+               'A battery below 80% capacity is degraded and will drain quickly regardless of any software optimization — plan a replacement.',
+               'Review per-app battery usage: Settings > Battery > Battery Usage. Any app consuming over 15% of battery in the background should be restricted or removed.',
+               'Disable location access for non-essential apps. GPS is one of the highest sustained power consumers on a smartphone.',
+               'Reduce Always-On Display usage, lower screen brightness, and shorten the screen timeout to 30 seconds.',
+               'Disable Wi-Fi, Bluetooth, and NFC when not in use — especially in areas with weak signal, where radios constantly amplify to reach the network.',
+               'Enable Battery Saver or Adaptive Battery to let the OS restrict background activity intelligently based on your usage.',
+               'Use a wakelock detection app (Wakelock Detector on Android) to find apps preventing the CPU from sleeping between screen-off periods.',
+               'If drain persists after all optimization, order a replacement battery matched to your exact model number.',
+               'Battery swap: apply heat to the rear panel, remove it, slowly pull the adhesive tabs at a 45-degree angle, disconnect the old battery connector, fit the new one, and test.'],
+        notes:{Samsung:'Samsung\'s Device Care > Battery panel shows per-app usage clearly. Enable "Adaptive power saving" in One UI battery settings for automatic optimization.',iPhone:'iOS shows a 28-day battery usage graph — look for specific days with abnormal drain to trace the cause to an app or background event.',Xiaomi:'MIUI\'s background app restrictions can interfere with legitimate apps. Verify that essential apps have "No restrictions" set under Settings > Apps > Manage Apps.',Huawei:'EMUI\'s Power Management section offers granular per-app background activity control — useful for isolating the battery-draining culprit.',Other:''}
+    },
+    'battery-charge':{
+        title:'Phone Will Not Charge',diff:'Easy to Moderate',time:'15–45 min',cost:'$0–$30',
+        tools:['Toothpick or soft brush','Compressed air','Spare charging cable (for testing)','Multimeter (optional)'],
+        steps:['Test with a completely different charging cable and power adapter. A faulty cable is the single most common cause of charging failure.',
+               'Inspect the charging port under a bright flashlight. Look for: compacted lint at the back of the port, bent or corroded pins, or physical damage.',
+               'Clean the port gently using a wooden or plastic toothpick — never use metal. Gently scrape out any compacted lint, then blow out with compressed air.',
+               'Try wireless charging if your phone supports it. If Qi charging works but wired charging does not, the physical port is definitively the issue.',
+               'Restart the phone and try charging again — a software freeze occasionally prevents the charge controller from recognising a connected charger.',
+               'Check the phone\'s warmth when plugged in. Warmth means the charger is detected but rejected (battery or software issue). No warmth at all points to a dead port or charging IC.',
+               'On Android, check Settings > Battery while plugged in — does "Charging" appear? Briefly appearing then disappearing indicates an intermittent port connection.',
+               'If the port is confirmed faulty, replacement is a moderate repair. On most modern phones the port is a separate daughter board costing $6–$20.',
+               'On older iPhones and some Galaxy models the port is soldered to the motherboard — this requires a professional with a hot-air rework station.'],
+        notes:{Samsung:'Galaxy phones typically have a separate USB-C sub-PCB that can be swapped without soldering — one of the easiest Samsung DIY repairs.',iPhone:'The Lightning / USB-C port is mounted on a flex cable that routes to the logic board. Access requires removing Pentalobe screws and several internal Phillips screws.',Xiaomi:'Most Redmi and Xiaomi models use a removable charging port flex board. Confirm with your model\'s iFixit teardown page before ordering a part.',Huawei:'P and Mate series typically use a removable sub-board. Earlier Honor models and budget Huawei phones often have the port soldered directly to the main board.',Other:''}
+    },
+    'battery-heat':{
+        title:'Phone Overheating',diff:'Easy',time:'10–25 min',cost:'$0 (usually)',
+        tools:['No tools required initially'],
+        steps:['Identify when overheating occurs: during charging, gaming, video calls, or at idle standby — each scenario points to a different cause.',
+               'Remove the phone case while charging or running demanding tasks. Cases trap heat; some tasks generate significant heat by design.',
+               'Check for background apps consuming excessive CPU: Settings > Battery > Battery Usage. An app using over 20% at idle is abnormal and may be stuck in a loop.',
+               'Check your signal strength. In weak-signal areas the modem radio amplifies heavily to reach the tower, generating substantial sustained heat.',
+               'Avoid using the phone while fast-charging. Running the CPU and the fast-charge circuit simultaneously multiplies heat output considerably.',
+               'Install any pending system updates — firmware bugs causing runaway CPU processes are a documented cause of overheating across all major brands.',
+               'Reset network settings if overheating primarily occurs during calls or mobile data use, as this can resolve modem driver state issues.',
+               'If the phone shuts down at temperatures like 40–50 °C (shown in battery apps), the battery thermistor or protection circuit may be malfunctioning.',
+               'Persistent overheating at standby with no obvious software cause often indicates a degraded battery or a board-level short — consult a technician.',
+               'As a last software resort before seeking professional inspection, a factory reset eliminates the possibility of a persistent software loop causing heat.'],
+        notes:{Samsung:'Galaxy S21 and S22 Snapdragon models are known to run warm under load. Ensure your phone is fully up to date — Samsung released optimised thermal firmware.',iPhone:'iPhone 15 had early overheating reports tied to the A17 Pro chip and specific app behaviors; Apple resolved this in iOS 17.0.3.',Xiaomi:'Xiaomi gaming phones have a built-in performance / temperature overlay. Check Game Turbo settings to cap performance and reduce thermal output.',Huawei:'',Other:''}
+    },
+    'camera-blurry':{
+        title:'Camera Blurry or Out of Focus',diff:'Easy',time:'10–30 min',cost:'$0–$40',
+        tools:['Microfiber cloth','Compressed air','Lens protector glass (if scratched)'],
+        steps:['Clean the camera lens with a dry microfiber cloth in circular motions. Fingerprint oil is the number-one cause of blurry photos and is often invisible to the naked eye.',
+               'Remove your phone case — some cases partially cover the camera bump or cause their own edge to block the lens at certain angles.',
+               'Open the camera app and tap the subject to manually reset autofocus. If that works, disable "AI scene detection" in camera settings to prevent it overriding focus.',
+               'Test in good lighting. Poor light forces high ISO and slow shutter speed, both of which produce blur — this is normal hardware behaviour, not a defect.',
+               'Check whether blur affects all lenses or just one (main, ultrawide, telephoto). If only one is blurry, that specific module needs attention.',
+               'Clear the camera app cache: Settings > Apps > Camera > Storage > Clear Cache. A corrupted cache can cause slow or inaccurate autofocus.',
+               'Record a short video and compare sharpness with still photos. If video is sharp but photos blur, you are moving the phone during the shutter — use the volume button as a remote shutter.',
+               'Inspect the lens glass closely. Visible scratches require a replacement camera lens cover ($3–$8) that press-fits over the existing module.',
+               'If autofocus is mechanically broken — the lens does not visibly move, or you hear rattling when shaking the phone — the OIS actuator is damaged. Camera module replacement is needed.',
+               'Replacement camera modules cost $20–$80 depending on the model and whether it is the main, ultrawide, or telephoto lens.'],
+        notes:{Samsung:'Samsung\'s Scene Optimizer and Shot Suggestions can override manual focus. Disable them temporarily in camera settings to baseline the hardware quality.',iPhone:'OIS damage from drops affects iPhone camera sharpness noticeably. Genuine Apple replacement camera modules must be used for models where the camera interacts with Face ID.',Xiaomi:'Xiaomi Leica-tuned cameras: disable AI mode in the camera app to get a clean hardware baseline without computational processing influencing the result.',Huawei:'Huawei Leica cameras are sensitive to impact. Even minor drops can dislodge the lens actuator. A sharp tap on the phone\'s back occasionally restores focus temporarily — treat this as a field workaround only.',Other:''}
+    },
+    'camera-open':{
+        title:'Camera App Will Not Open or Crashes',diff:'Easy',time:'10–20 min',cost:'$0',
+        tools:['No tools required'],
+        steps:['Force-close the camera app and reopen: long-press the app icon > App Info > Force Stop (Android) or swipe up from the bottom and dismiss it (iPhone).',
+               'Restart the phone — this clears RAM and resets camera hardware drivers, resolving the majority of camera launch failures.',
+               'Free up internal storage. The camera requires at least 500 MB free to save photos and video. Delete unused apps, photos, or videos.',
+               'Clear camera app cache and data: Settings > Apps > Camera > Storage > Clear Cache (then Clear Data if cache alone does not fix it). Clearing data resets camera settings to defaults.',
+               'Check camera permissions: Settings > Privacy > Camera. Confirm the camera app itself has camera permission enabled.',
+               'Test a third-party camera app (Open Camera on Android). If it works but the stock app does not, the issue is isolated to the stock camera application.',
+               'Check for system updates — a recent OS update may have introduced a camera app bug that a subsequent patch already resolves.',
+               'Boot into Safe Mode and test. If the camera works in Safe Mode, a third-party app (often a "camera booster" or photo editor) is creating a conflict.',
+               'Perform a factory reset as a last resort — back up all data first. This resolves persistent camera software failures in the vast majority of cases.',
+               'If the camera still fails after a factory reset, the camera module or sensor is faulty and requires professional inspection or replacement.'],
+        notes:{Samsung:'If the Samsung camera shows "Warning: Camera Failed," go to Settings > Apps > show system apps, find the Camera entry, and clear its data.',iPhone:'If the iPhone camera opens to a black screen or freezes, toggling Airplane Mode on and off sometimes clears a camera driver lock-up.',Xiaomi:'MIUI may restrict the camera\'s background activity and kill it before it initialises. Set the camera app to "No Restrictions" under Settings > Apps > Manage Apps.',Huawei:'Camera crashes following EMUI updates are common — check the Huawei Community forum for a specific patch or confirmed workaround for your model.',Other:''}
+    },
+    'camera-black':{
+        title:'Camera Viewfinder Shows Black Screen',diff:'Easy to Moderate',time:'10–45 min',cost:'$0–$60',
+        tools:['Screwdriver set (if hardware needed)','Plastic spudger'],
+        steps:['Force-close and reopen the camera app — a stuck process can render the viewfinder black while the hardware is actually functional.',
+               'Switch between front and rear cameras within the app. If one works and the other is black, you have isolated which specific module is failing.',
+               'Restart the device. A black viewfinder that clears after a reboot is a software issue.',
+               'Check whether an ongoing screen recording or third-party app is locking camera access. Close all background apps and retry.',
+               'Clear camera app cache: Settings > Apps > Camera > Storage > Clear Cache.',
+               'Revoke and re-grant the camera permission in Settings > Privacy > Camera — this forces the OS to reinitialise camera hardware access.',
+               'Install and test a third-party camera app. If it also shows black, the hardware is the issue.',
+               'Open the device and gently reseat the camera flex cable connector. Drops can partially unseat these connectors, causing intermittent or permanent viewfinder failure.',
+               'If a module was recently replaced, verify the connector is fully seated and the ribbon cable is not kinked or pinched under the bracket.',
+               'A camera that shows black in all apps and after reseating the connector has a failed sensor. Module replacement is required.'],
+        notes:{Samsung:'The Samsung diagnostic menu (*#0*#) can test each camera module independently — useful for confirming exactly which sensor has failed before ordering a part.',iPhone:'A black viewfinder on iPhones after a logic board repair sometimes indicates a misaligned NFC coil interfering with the camera module — check coil placement.',Xiaomi:'',Huawei:'',Other:''}
+    },
+    'speaker-nosound':{
+        title:'No Sound from Speaker',diff:'Easy',time:'10–30 min',cost:'$0–$20',
+        tools:['Soft brush or toothbrush','Compressed air','Screwdriver set (if replacing speaker)'],
+        steps:['Check volume: press the volume up button and verify media volume is raised. On iPhone, check the physical silent/ringer switch on the left side.',
+               'Check whether a Bluetooth audio device is connected and routing audio away from the speaker — go to Settings > Bluetooth and disconnect all devices.',
+               'Plug in headphones, play audio, then unplug them. Debris in the headphone jack or USB-C port can cause the phone to think headphones are always connected.',
+               'Clean the speaker grille with a dry soft-bristle toothbrush using firm circular strokes. Compacted lint reduces volume dramatically.',
+               'Blow the speaker grille with compressed air from 2–3 cm away to dislodge debris loosened by brushing.',
+               'Run a hardware speaker test: Samsung — dial *#0*# and tap Melody. iPhone — use the Sounds & Haptics pane in Settings. This bypasses apps and tests the speaker directly.',
+               'Restart the phone and test with multiple audio sources (a ringtone and a YouTube video) to rule out app-specific muting.',
+               'Check accessibility and audio settings for any mono audio, sound balance slider, or media routing setting that may direct output elsewhere.',
+               'Back up and perform a factory reset if all software steps fail — OS corruption can prevent the audio mixer from outputting to the speaker.',
+               'If hardware is confirmed dead, the speaker module is typically the cheapest component to replace ($3–$15) and is accessible with just a screwdriver and spudger.'],
+        notes:{Samsung:'Samsung\'s Device Care > Diagnostics includes a speaker test that confirms hardware speaker status without any disassembly.',iPhone:'The iPhone bottom speaker is adjacent to the charging port — a straightforward module swap once the screen is removed. The top earpiece speaker is a separate part.',Xiaomi:'MIUI includes a sound hardware test under Settings > About Phone > All Specs — tap the Speaker icon to trigger it.',Huawei:'',Other:''}
+    },
+    'speaker-muffled':{
+        title:'Muffled or Distorted Audio',diff:'Easy',time:'10–20 min',cost:'$0–$15',
+        tools:['Soft-bristle toothbrush','Compressed air','Wooden or plastic toothpick'],
+        steps:['Examine the speaker grille with a light source — visible lint or debris is almost certainly reducing the sound output. Cleaning alone typically restores clear audio.',
+               'Brush the speaker grille firmly with a dry toothbrush in multiple directions, working bristles into the individual holes.',
+               'Follow immediately with a burst of compressed air at an angle to expel the debris loosened by brushing.',
+               'Use a wooden or plastic toothpick to remove stubborn lint from individual grille holes. Do not push inward with significant force.',
+               'Play a 1 kHz test tone at moderate volume (easily found on YouTube). Distortion at specific frequencies indicates a damaged or warped speaker membrane.',
+               'Test at different volume levels. Slight distortion at maximum volume is normal for small phone speakers — reduce volume by 10% and test again.',
+               'Check your music app\'s equalizer settings. An EQ preset boosting low frequencies past the speaker\'s capability causes audible distortion.',
+               'Listen for crackling sounds during playback — crackling indicates a physically torn or partially detached speaker cone, which requires replacement.',
+               'If muffling persists after a thorough cleaning, the speaker membrane is likely degraded — common after water exposure. Speaker modules cost $5–$15.'],
+        notes:{Samsung:'Samsung\'s Dolby Atmos processing can over-boost certain frequencies causing muddiness. Disable it in Sound settings for a comparison listen.',iPhone:'Water inside the speaker chamber causes persistent muffling. Use the "Water Eject" Siri shortcut or play a low-frequency tone at high volume to expel moisture.',Xiaomi:'',Huawei:'',Other:''}
+    },
+    'speaker-echo':{
+        title:'Echo or Feedback During Calls',diff:'Easy',time:'5–15 min',cost:'$0',
+        tools:['No tools required'],
+        steps:['Ask the other caller whether they hear the echo. If they do, your microphone is picking up audio leaking from your earpiece and re-transmitting it.',
+               'Lower your in-call earpiece volume. Echo is frequently caused by mic pickup of audio leaking from the earpiece — reducing volume breaks the feedback loop.',
+               'If using speakerphone, move the phone further from your face and ensure you are not in a small reflective room where environmental echo is amplified.',
+               'Clean the microphone port — a small hole at the bottom of the phone near the charging port. A blocked mic forces the phone to amplify input, which worsens echo.',
+               'Restart the phone before your next test call. Voice processing algorithms can enter a bad state that persists until a reboot.',
+               'Test with a different call app (WhatsApp vs. the native dialer). If echo appears in only one app, that app\'s audio routing settings are the cause.',
+               'Check whether a call recording app or screen recorder is active — these create audio feedback loops that manifest as echo.',
+               'Disable noise suppression or voice enhancement in Call settings if the option is available — these algorithms can paradoxically introduce echo artefacts.',
+               'If echo persists across all call methods after a restart, test with wired headphones. If the headphone mic is echo-free, the phone\'s main microphone may be malfunctioning.'],
+        notes:{Samsung:'Samsung\'s Phone > Settings > Call sound quality options include HD voice and noise reduction toggles that can affect echo behaviour — try toggling them.',iPhone:'FaceTime echo is usually caused by the remote caller using speakers — ask them to switch to headphones or AirPods to resolve it on their end.',Xiaomi:'',Huawei:'',Other:''}
+    },
+    'sw-logo':{
+        title:'Phone Stuck on Boot Logo',diff:'Easy to Moderate',time:'15–60 min',cost:'$0',
+        tools:['USB cable','Computer (for firmware flash if needed)','Odin (Samsung) / iTunes or Finder (iPhone) / Mi Flash (Xiaomi)'],
+        steps:['Force restart: hold Power + Volume Down for 10–20 seconds (most Android) or Side + Volume Down (iPhone) until a new boot animation appears.',
+               'If force restart loops back to the stuck logo, boot into Recovery Mode: Power + Volume Up + Home (Samsung with Home button) or Power + Volume Up (Samsung without).',
+               'In Recovery, select "Wipe Cache Partition" — this clears temporary system files without deleting any personal data.',
+               'Reboot from Recovery and wait up to 5 minutes. The first boot after a cache wipe takes longer than usual.',
+               'If still stuck, use Safe Mode from Recovery (if supported) to check whether a third-party app is blocking the boot sequence.',
+               'In Recovery, select "Factory Reset / Wipe Data" — this erases personal data but resolves the vast majority of boot-loop failures. Back up first if at all possible.',
+               'If factory reset fails, the OS itself is corrupted. Flash stock firmware using a computer.',
+               'Samsung: use Odin with official firmware from SamFW.com. Enter Download Mode (Volume Down + USB plug-in, varies by model).',
+               'iPhone: connect to iTunes (Windows) or Finder (Mac), enter DFU mode, and select Restore.',
+               'Xiaomi: use Mi Flash Tool with a fastboot ROM downloaded from the official Xiaomi firmware page.',
+               'If the phone refuses to enter Download or DFU mode, the bootloader or storage chip may be failing — professional repair is required.'],
+        notes:{Samsung:'Odin is the trusted Samsung flashing tool — avoid third-party alternatives. Download Mode on modern Samsung: hold Volume Down while plugging in the USB cable.',iPhone:'DFU mode on iPhone 8 and later: press and release Volume Up, press and release Volume Down, then hold the Side button until the screen goes black — then immediately add Volume Down while holding Side.',Xiaomi:'Use a fastboot ROM for Mi Flash and a recovery ROM for in-device installation. These are two different file types — use the correct one for your flashing method.',Huawei:'Huawei devices can be recovered using the official Huawei phone update tool or E-Recovery mode (Volume Up + Power with specific timing per model).',Other:''}
+    },
+    'sw-freeze':{
+        title:'Phone Freezing or Extreme Lag',diff:'Easy',time:'15–30 min',cost:'$0',
+        tools:['No tools required'],
+        steps:['Force restart the phone if it is currently frozen: Power + Volume Down for 10–15 seconds (Android) or Side + Volume Down (iPhone).',
+               'Check available storage: Settings > Storage. A phone with less than 1 GB free will lag severely. Delete unused apps, photos, and videos.',
+               'Check RAM usage on Android via Developer Options > Memory. Review what is consuming RAM and close unnecessary background apps.',
+               'Clear the system cache from Recovery Mode (Power + Volume Up on most Android) to remove accumulated temporary files causing slowdowns.',
+               'Identify resource-heavy apps: Settings > Battery > Battery Usage also reflects high CPU consumption. Remove or replace consistently top-ranking apps.',
+               'Reduce animation scale in Developer Options (tap Build Number 7 times in About Phone to enable): set Window Scale, Transition Scale, and Animator Scale all to 0.5x.',
+               'Install any pending system updates — performance patches and memory management improvements are common in firmware updates.',
+               'Remove any "RAM booster," "phone cleaner," or "antivirus" apps. These are net-negative for performance; they consume resources while claiming to free them.',
+               'Boot into Safe Mode. If the phone runs smoothly in Safe Mode, a third-party app is causing the freeze — reinstall apps selectively after a clean wipe.',
+               'If lag persists in Safe Mode on a phone under 3 years old, test storage health with an app like Disk Info — a failing NAND chip causes severe system-wide slowdowns.'],
+        notes:{Samsung:'One UI\'s Device Care > Optimize Now clears RAM and running processes. For severe, persistent lag on older Galaxy models, a clean firmware flash often restores speed dramatically.',iPhone:'Apple\'s performance throttling activates when battery health drops below ~80%. Replacing a degraded battery restores full CPU performance.',Xiaomi:'MIUI 14\'s Memory Extension feature uses internal storage as virtual RAM — enable it under Settings > Additional Settings > Memory Extension on low-RAM devices.',Huawei:'',Other:''}
+    },
+    'sw-crash':{
+        title:'Apps Keep Crashing',diff:'Easy',time:'10–25 min',cost:'$0',
+        tools:['No tools required'],
+        steps:['Identify the pattern first: does one specific app crash, or do many apps crash? Widespread crashes suggest a system-level issue; a single app crashing is an app-level problem.',
+               'For a single crashing app: force-close it, then go to Settings > Apps > [App Name] > Storage > Clear Cache, and reopen.',
+               'Update the crashing app from the app store. If no update is available, check the developer\'s website or forum for known crash reports on your OS version.',
+               'If the app recently updated and started crashing, uninstall the update: Settings > Apps > [App Name] > three-dot menu > Uninstall Updates (Android).',
+               'Fully reinstall the app: uninstall it, restart the phone, then reinstall a fresh copy from the app store.',
+               'Verify app permissions: Settings > Apps > [App Name] > Permissions. Ensure all required permissions (storage, camera, etc.) are granted.',
+               'Clear the phone\'s system cache from Recovery mode — corrupted system cache can cause multiple unrelated apps to crash.',
+               'Update the phone\'s operating system. Many app crashes on older OS versions are resolved in updates, and developers increasingly target recent OS releases.',
+               'If Google Play Services or system apps are crashing (common after OS updates), clear the cache for "Google Play Services" and "Android System WebView" under Apps > Show System Apps.',
+               'A factory reset is the most reliable fix for widespread crashing. Back up all data to Google Drive or iCloud first, then restore selectively to avoid re-importing a corrupted backup.'],
+        notes:{Samsung:'Samsung\'s Secure Folder and Knox environment can cause app compatibility issues. Test whether the crashing app behaves differently outside of Secure Folder.',iPhone:'If apps crash on launch on iPhone, check whether "Offload Unused Apps" is deleting app data — disable it under Settings > App Store.',Xiaomi:'MIUI aggressively kills background apps. If apps crash when returning from background, grant each affected app "Run in background" permission under Settings > Apps > Manage Apps.',Huawei:'EMUI\'s power management force-stops apps without warning. Grant each crashing app "Run in background" permission in the per-app Battery settings.',Other:''}
+    },
+};
+
+const costs = {
+    'iphone-flagship':{screen:{part:'$80–$180',diy:'$90–$200',pro:'$280–$450',diff:'Advanced',time:'1–2 hrs'},battery:{part:'$15–$35',diy:'$20–$45',pro:'$80–$130',diff:'Moderate',time:'30–60 min'},port:{part:'$20–$45',diy:'$25–$55',pro:'$120–$200',diff:'Advanced',time:'1–2 hrs'},camera:{part:'$40–$100',diy:'$50–$120',pro:'$150–$300',diff:'Advanced',time:'1–2 hrs'},speaker:{part:'$10–$25',diy:'$15–$35',pro:'$80–$160',diff:'Moderate',time:'45–75 min'}},
+    'iphone-mid':{screen:{part:'$30–$90',diy:'$35–$100',pro:'$150–$280',diff:'Moderate',time:'45–90 min'},battery:{part:'$10–$25',diy:'$12–$30',pro:'$60–$100',diff:'Moderate',time:'30–45 min'},port:{part:'$15–$30',diy:'$18–$40',pro:'$90–$150',diff:'Moderate',time:'45–75 min'},camera:{part:'$25–$70',diy:'$30–$80',pro:'$100–$220',diff:'Moderate',time:'45–90 min'},speaker:{part:'$8–$18',diy:'$10–$25',pro:'$60–$120',diff:'Moderate',time:'40–60 min'}},
+    'samsung-s':{screen:{part:'$50–$150',diy:'$55–$165',pro:'$200–$380',diff:'Moderate',time:'45–90 min'},battery:{part:'$12–$30',diy:'$14–$35',pro:'$60–$100',diff:'Easy',time:'20–40 min'},port:{part:'$8–$20',diy:'$10–$25',pro:'$60–$120',diff:'Easy',time:'20–40 min'},camera:{part:'$20–$80',diy:'$25–$90',pro:'$100–$220',diff:'Moderate',time:'45–75 min'},speaker:{part:'$5–$15',diy:'$7–$20',pro:'$50–$100',diff:'Easy',time:'20–35 min'}},
+    'samsung-a':{screen:{part:'$20–$70',diy:'$22–$80',pro:'$100–$200',diff:'Easy',time:'30–60 min'},battery:{part:'$8–$20',diy:'$10–$25',pro:'$40–$80',diff:'Easy',time:'15–30 min'},port:{part:'$5–$15',diy:'$6–$18',pro:'$40–$80',diff:'Easy',time:'15–25 min'},camera:{part:'$12–$45',diy:'$15–$55',pro:'$60–$150',diff:'Easy',time:'30–50 min'},speaker:{part:'$4–$10',diy:'$5–$14',pro:'$40–$80',diff:'Easy',time:'15–30 min'}},
+    'xiaomi':{screen:{part:'$18–$65',diy:'$20–$75',pro:'$80–$180',diff:'Easy',time:'30–60 min'},battery:{part:'$8–$20',diy:'$10–$25',pro:'$40–$80',diff:'Easy',time:'20–35 min'},port:{part:'$5–$12',diy:'$6–$16',pro:'$35–$70',diff:'Easy',time:'15–25 min'},camera:{part:'$10–$40',diy:'$12–$48',pro:'$50–$130',diff:'Easy',time:'30–45 min'},speaker:{part:'$3–$10',diy:'$4–$14',pro:'$35–$70',diff:'Easy',time:'15–30 min'}},
+    'other':{screen:{part:'$15–$60',diy:'$18–$70',pro:'$80–$180',diff:'Varies',time:'30–90 min'},battery:{part:'$6–$18',diy:'$8–$22',pro:'$35–$80',diff:'Easy',time:'15–35 min'},port:{part:'$4–$12',diy:'$5–$16',pro:'$30–$70',diff:'Easy',time:'15–30 min'},camera:{part:'$8–$35',diy:'$10–$42',pro:'$45–$120',diff:'Easy',time:'25–50 min'},speaker:{part:'$3–$10',diy:'$4–$14',pro:'$30–$70',diff:'Easy',time:'15–25 min'}},
+};
+
+function pickBrand(b, el) {
+    brand = b;
+    document.querySelectorAll('.brand-tile').forEach(x => x.classList.remove('selected'));
+    el.classList.add('selected');
+    setTimeout(() => goStep(2), 260);
+}
+
+function pickCat(c, el) {
+    cat = c;
+    document.querySelectorAll('.cat-tile').forEach(x => x.classList.remove('selected'));
+    el.classList.add('selected');
+    document.getElementById('s3title').textContent = catTitles[c];
+    const list = document.getElementById('probList');
+    list.innerHTML = problems[c].map(p =>
+        `<div class="prob-row" onclick="showGuide('${p.key}')"><i class="fa-solid ${p.icon}"></i>${p.label}</div>`
+    ).join('');
+    setTimeout(() => goStep(3), 260);
+}
+
+function showGuide(key) {
+    const g = guides[key];
+    if (!g) return;
+    const dl = g.diff.toLowerCase();
+    const dc = dl.startsWith('easy') ? 'gp-easy' : dl.startsWith('mod') ? 'gp-moderate' : 'gp-advanced';
+    const note = (g.notes && g.notes[brand]) ? g.notes[brand] : '';
+    document.getElementById('guideOut').innerHTML = `
+        <div class="guide-h">${g.title}</div>
+        <div class="guide-pills">
+            <div class="gpill ${dc}"><i class="fa-solid fa-gauge-high"></i>${g.diff}</div>
+            <div class="gpill gp-default"><i class="fa-solid fa-clock"></i>${g.time}</div>
+            <div class="gpill gp-cost"><i class="fa-solid fa-tag"></i>${g.cost}</div>
+        </div>
+        <div class="tools-box">
+            <div class="box-lbl"><i class="fa-solid fa-toolbox"></i>&nbsp;Required Tools</div>
+            <div class="tool-tags">${g.tools.map(t => `<span class="tool-tag">${t}</span>`).join('')}</div>
+        </div>
+        <div class="steps-list">
+            <div class="box-lbl" style="margin-bottom:12px"><i class="fa-solid fa-list-ol"></i>&nbsp;Step-by-Step Guide</div>
+            ${g.steps.map((s,i) => `<div class="step-row"><div class="step-num">${i+1}</div><div class="step-txt">${s}</div></div>`).join('')}
+        </div>
+        ${note ? `<div class="brand-note-box"><i class="fa-solid fa-circle-info"></i>&nbsp;<strong>${brand} note:</strong> ${note}</div>` : ''}
+    `;
+    goStep(4);
+}
+
+function goStep(n) {
+    [1,2,3,4].forEach(i => {
+        const el = document.getElementById('s' + i);
+        if (i === n) { el.classList.remove('hidden'); el.classList.add('fade-in'); }
+        else el.classList.add('hidden');
+    });
+    updateDots(n);
+}
+
+function updateDots(n) {
+    for (let i = 1; i <= 4; i++) {
+        const d = document.getElementById('d' + i);
+        const dl = document.getElementById('dl' + i);
+        d.classList.remove('active','done');
+        dl.classList.remove('active');
+        if (i < n) d.classList.add('done');
+        else if (i === n) { d.classList.add('active'); dl.classList.add('active'); }
+    }
+    for (let i = 1; i <= 3; i++) {
+        document.getElementById('l' + i).classList.toggle('done', i < n);
+    }
+}
+
+function restart() {
+    brand = ''; cat = '';
+    document.querySelectorAll('.brand-tile,.cat-tile').forEach(x => x.classList.remove('selected'));
+    goStep(1);
+}
+
+let selDev = 'iphone-flagship', selRep = 'screen';
+
+function selectDev(el) {
+    document.querySelectorAll('.dev-card').forEach(x => x.classList.remove('active'));
+    el.classList.add('active');
+    selDev = el.dataset.dev;
+}
+
+function selectRep(el) {
+    document.querySelectorAll('.rep-card').forEach(x => x.classList.remove('active'));
+    el.classList.add('active');
+    selRep = el.dataset.rep;
+}
+
+function calcCost() {
+    const c = costs[selDev][selRep];
+    const devEl = document.querySelector('.dev-card.active');
+    const repEl = document.querySelector('.rep-card.active');
+    const devName = devEl ? devEl.querySelector('.dev-name').textContent : '';
+    const repName = repEl ? repEl.querySelector('.rep-name').textContent : '';
+    const iconClass = devEl ? devEl.querySelector('.dev-img i').className : 'fa-brands fa-apple';
+
+    document.getElementById('crTitle').textContent = devName + ' — ' + repName + ' Repair';
+    document.getElementById('crIcon').innerHTML = '<i class="' + iconClass + '"></i>';
+    document.getElementById('crDiyTotal').textContent = c.diy;
+    document.getElementById('crDiyPart').textContent = c.part;
+    document.getElementById('crDiff').textContent = c.diff;
+    document.getElementById('crTime').textContent = c.time;
+    document.getElementById('crProTotal').textContent = c.pro;
+
+    const out = document.getElementById('costOut');
+    out.classList.remove('hidden');
+    out.style.animation = 'none';
+    void out.offsetWidth;
+    out.style.animation = 'pgFade .3s ease forwards';
+    out.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+</body>
+</html>
