@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Survey Report</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #2c3e50;
+            line-height: 1.7;
+        }
+
+        header {
+            background: linear-gradient(160deg, #f0eeff 0%, #fafaff 60%, #eef3ff 100%);
+            color: #1a1a2e;
+            padding: 60px 20px 50px;
+            text-align: center;
+        }
+
+        header .badge {
+            display: inline-block;
+            background: #ede9fb;
+            color: #6c3fc5;
+            font-size: 0.75em;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 6px 18px;
+            border-radius: 20px;
+            margin-bottom: 22px;
+        }
+
+        header h1 {
+            font-size: 2.8em;
+            font-weight: 800;
+            color: #0f0f1a;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+            line-height: 1.15;
+        }
+
+        header .subtitle {
+            font-size: 2.2em;
+            font-weight: 800;
+            color: #6c3fc5;
+            margin-bottom: 18px;
+            line-height: 1.2;
+        }
+
+        header .desc {
+            font-size: 1.0em;
+            color: #6b7280;
+            font-weight: 400;
+            max-width: 480px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 36px 20px 10px;
+        }
+
+        section {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 34px 36px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 14px rgba(0,0,0,0.07);
+        }
+
+        section h2 {
+            font-size: 1.45em;
+            color: #1a3a5c;
+            border-bottom: 3px solid #2e6da4;
+            padding-bottom: 11px;
+            margin-bottom: 22px;
+            font-weight: 700;
+        }
+
+        .intro-text {
+            font-size: 1.0em;
+            color: #3d4f61;
+            line-height: 1.8;
+        }
+
+        /* Charts */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(460px, 1fr));
+            gap: 28px;
+        }
+
+        .chart-card {
+            background: #f8fafd;
+            border: 1px solid #dce6f0;
+            border-radius: 10px;
+            padding: 22px 20px 18px;
+        }
+
+        .chart-card h3 {
+            font-size: 1.0em;
+            color: #1a3a5c;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 290px;
+        }
+
+        /* Analysis */
+        .analysis-block {
+            margin-bottom: 26px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid #edf1f6;
+        }
+
+        .analysis-block:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .analysis-block h3 {
+            font-size: 1.08em;
+            color: #2e6da4;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .analysis-block p {
+            color: #3d4f61;
+            font-size: 0.97em;
+            line-height: 1.8;
+        }
+
+        .conclusion-block {
+            background: #eef5fc;
+            border-left: 5px solid #2e6da4;
+            border-radius: 0 8px 8px 0;
+            padding: 18px 20px;
+            margin-top: 10px;
+        }
+
+        /* Stats */
+        .stats-intro {
+            color: #555;
+            font-size: 0.96em;
+            margin-bottom: 22px;
+        }
+
+        .stat-item {
+            border-left: 4px solid #2e6da4;
+            background: #f4f8fd;
+            border-radius: 0 8px 8px 0;
+            padding: 16px 20px;
+            margin-bottom: 18px;
+        }
+
+        .stat-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .stat-source {
+            font-weight: 700;
+            color: #1a3a5c;
+            font-size: 0.92em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+
+        .stat-item p.stat-body {
+            font-size: 0.95em;
+            color: #3d4f61;
+            line-height: 1.75;
+            margin-bottom: 8px;
+        }
+
+        .stat-item a {
+            font-size: 0.84em;
+            color: #2e6da4;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .stat-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a3a5c;
+            color: #b8cde0;
+            text-align: center;
+            padding: 28px 20px;
+            font-size: 0.9em;
+        }
+
+        footer p + p {
+            margin-top: 7px;
+        }
+
+        footer a {
+            color: #6baed6;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            header h1 { font-size: 1.9em; }
+            header .subtitle { font-size: 1.5em; }
+            section { padding: 24px 18px; }
+            .chart-grid { grid-template-columns: 1fr; }
+            .chart-container { height: 250px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="badge">Survey Research</div>
+    <h1>E-Commerce Usage Survey</h1>
+    <p class="subtitle">Survey Findings</p>
+    <p class="desc">A study examining online shopping habits, platform preferences, and demographic patterns among 20 participants.</p>
+</header>
+
+<div class="container">
+
+    <!-- Introduction -->
+    <section>
+        <h2>Introduction</h2>
+        <p class="intro-text">
+            This report summarizes the results of a university survey on online shopping habits among 20 participants. The goal is to identify patterns in e-commerce behavior across different age groups, genders, and education levels.
+        </p>
+    </section>
+
+    <!-- Charts -->
+    <section>
+        <h2>Survey Findings</h2>
+        <div class="chart-grid">
+
+            <div class="chart-card">
+                <h3>Online Purchase vs. Browse Only (n = 20)</h3>
+                <div class="chart-container">
+                    <canvas id="purchaseChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <h3>Purchase Frequency Among Active Buyers (n = 16)</h3>
+                <div class="chart-container">
+                    <canvas id="frequencyChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <h3>Age Range Distribution (n = 20)</h3>
+                <div class="chart-container">
+                    <canvas id="ageChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <h3>Gender Distribution (n = 20)</h3>
+                <div class="chart-container">
+                    <canvas id="genderChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <h3>Highest Education Level Completed (n = 20)</h3>
+                <div class="chart-container">
+                    <canvas id="educationChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <h3>Favorite Online Shopping Sites (multiple selections allowed)</h3>
+                <div class="chart-container">
+                    <canvas id="sitesChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Analysis -->
+    <section>
+        <h2>Analysis &amp; Conclusions</h2>
+
+        <div class="analysis-block">
+            <h3>Online Purchasing vs. Browsing Only</h3>
+            <p>80% of respondents have made at least one online purchase. The remaining 20% browse but don't buy, citing payment security concerns and a preference for in-store shopping.</p>
+        </div>
+
+        <div class="analysis-block">
+            <h3>Purchase Frequency</h3>
+            <p>Half of active buyers shop online once a month, while 31% shop weekly. Only 19% purchase as infrequently as once a year, suggesting online shopping is now a routine habit.</p>
+        </div>
+
+        <div class="analysis-block">
+            <h3>Age Range Distribution</h3>
+            <p>Younger adults (18–39) make up 65% of respondents and are the most active buyers. However, all respondents aged 40 and above still reported making online purchases, showing broad adoption across age groups.</p>
+        </div>
+
+        <div class="analysis-block">
+            <h3>Gender Distribution</h3>
+            <p>The sample is nearly balanced between female (50%) and male (45%) respondents. Female respondents leaned toward fashion platforms like Shein, while male respondents favored Amazon and eBay.</p>
+        </div>
+
+        <div class="analysis-block">
+            <h3>Education Level</h3>
+            <p>College graduates are the most active online shoppers in this sample. High school respondents were more likely to browse without purchasing, possibly reflecting income differences.</p>
+        </div>
+
+        <div class="analysis-block">
+            <h3>Favorite Online Shopping Sites</h3>
+            <p>Amazon dominated with 14 mentions. Temu and Shein performed strongly among younger respondents, while eBay, Walmart.com, and Target.com attracted smaller but consistent audiences.</p>
+        </div>
+
+        <div class="analysis-block">
+            <h3>Overall Conclusion</h3>
+            <div class="conclusion-block">
+                <p>Online shopping is mainstream across all demographics in this sample. Amazon leads the market, but discount platforms like Temu and Shein are gaining ground fast among younger buyers. Higher education and younger age both correlate with more frequent online purchasing.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Supporting Statistics -->
+    <section>
+        <h2>Supporting Statistics</h2>
+        <div class="stat-item">
+            <p class="stat-source">Pew Research Center</p>
+            <p class="stat-body">About 8 in 10 American adults have made at least one online purchase, with adults aged 18–49 being the most consistent buyers. Mobile devices have largely replaced desktops as the primary shopping tool.</p>
+            <a href="https://www.pewresearch.org" target="_blank">pewresearch.org &rarr;</a>
+        </div>
+
+        <div class="stat-item">
+            <p class="stat-source">eMarketer</p>
+            <p class="stat-body">U.S. e-commerce sales are projected to exceed $1.7 trillion by 2027, making up over 20% of total retail. Amazon holds roughly 40% of that market, though its share is slowly declining as new competitors emerge.</p>
+            <a href="https://www.emarketer.com" target="_blank">emarketer.com &rarr;</a>
+        </div>
+
+        <div class="stat-item">
+            <p class="stat-source">ClickZ</p>
+            <p class="stat-body">Personalized recommendations increase purchase likelihood by up to 40%. Cart abandonment rates average around 70%, highlighting how important a smooth checkout experience is for online retailers.</p>
+            <a href="https://www.clickz.com" target="_blank">clickz.com &rarr;</a>
+        </div>
+
+        <div class="stat-item">
+            <p class="stat-source">E-Commerce Times</p>
+            <p class="stat-body">Temu's North American user base grew over 150% in its first year, and Shein remains one of the most-downloaded shopping apps globally — both driven by deep discounts and social media marketing aimed at younger shoppers.</p>
+            <a href="https://www.ecommercetimes.com" target="_blank">ecommercetimes.com &rarr;</a>
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    <p style="margin-top: 12px;">Questions or comments? Contact: <a href="mailto:20233077@std.neu.edu.tr">20233077@std.neu.edu.tr</a></p>
+</footer>
+
+<script>
+    // Chart 1: Online Purchase vs Browse Only (Doughnut)
+    new Chart(document.getElementById('purchaseChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Have Purchased Online', 'Browse Only — No Purchase'],
+            datasets: [{
+                data: [16, 4],
+                backgroundColor: ['#2e6da4', '#b0c8e0'],
+                borderWidth: 3,
+                borderColor: '#ffffff',
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { font: { size: 12, family: 'Segoe UI, sans-serif' }, padding: 14 }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => ` ${ctx.label}: ${ctx.raw} people (${Math.round(ctx.raw / 20 * 100)}%)`
+                    }
+                }
+            }
+        }
+    });
+
+    // Chart 2: Purchase Frequency (Bar)
+    new Chart(document.getElementById('frequencyChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Once a Year', 'Once a Month', 'Once a Week'],
+            datasets: [{
+                label: 'Respondents',
+                data: [3, 8, 5],
+                backgroundColor: ['#9ecae1', '#2e6da4', '#1a3a5c'],
+                borderRadius: 7,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => ` ${ctx.raw} respondents (${Math.round(ctx.raw / 16 * 100)}% of buyers)`
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 10,
+                    ticks: { stepSize: 1, font: { size: 12 } },
+                    title: { display: true, text: 'Number of Respondents', font: { size: 12 } }
+                },
+                x: { ticks: { font: { size: 12 } } }
+            }
+        }
+    });
+
+    // Chart 3: Age Range (Bar)
+    new Chart(document.getElementById('ageChart'), {
+        type: 'bar',
+        data: {
+            labels: ['18 – 25', '26 – 39', '40 – 50', 'Over 50'],
+            datasets: [{
+                label: 'Respondents',
+                data: [7, 6, 4, 3],
+                backgroundColor: ['#4a90d9', '#2e6da4', '#1a3a5c', '#0d1f33'],
+                borderRadius: 7,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => ` ${ctx.raw} respondents (${Math.round(ctx.raw / 20 * 100)}%)`
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 10,
+                    ticks: { stepSize: 1, font: { size: 12 } },
+                    title: { display: true, text: 'Number of Respondents', font: { size: 12 } }
+                },
+                x: { ticks: { font: { size: 12 } } }
+            }
+        }
+    });
+
+    // Chart 4: Gender (Pie)
+    new Chart(document.getElementById('genderChart'), {
+        type: 'pie',
+        data: {
+            labels: ['Female', 'Male', 'Non-binary / Prefer not to say'],
+            datasets: [{
+                data: [10, 9, 1],
+                backgroundColor: ['#c0392b', '#2e6da4', '#27ae60'],
+                borderWidth: 3,
+                borderColor: '#ffffff',
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { font: { size: 11, family: 'Segoe UI, sans-serif' }, padding: 12 }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => ` ${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw / 20 * 100)}%)`
+                    }
+                }
+            }
+        }
+    });
+
+    // Chart 5: Education Level (Doughnut)
+    new Chart(document.getElementById('educationChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['High School', 'Some College', 'College Graduate', 'Graduate School'],
+            datasets: [{
+                data: [3, 5, 8, 4],
+                backgroundColor: ['#c6dbef', '#6baed6', '#2e6da4', '#1a3a5c'],
+                borderWidth: 3,
+                borderColor: '#ffffff',
+                hoverOffset: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { font: { size: 11, family: 'Segoe UI, sans-serif' }, padding: 12 }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => ` ${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw / 20 * 100)}%)`
+                    }
+                }
+            }
+        }
+    });
+
+    // Chart 6: Favorite Sites (Horizontal Bar)
+    new Chart(document.getElementById('sitesChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Amazon', 'Temu', 'Shein', 'eBay', 'Walmart.com', 'Target.com'],
+            datasets: [{
+                label: 'Mentions',
+                data: [14, 8, 7, 5, 4, 3],
+                backgroundColor: ['#FF9900', '#e74c3c', '#e91e8c', '#e2001a', '#0071ce', '#cc0000'],
+                borderRadius: 6,
+                borderSkipped: false
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: ctx => ` ${ctx.raw} mentions out of 20 respondents`
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    max: 16,
+                    ticks: { stepSize: 2, font: { size: 12 } },
+                    title: { display: true, text: 'Number of Mentions (multiple allowed)', font: { size: 12 } }
+                },
+                y: { ticks: { font: { size: 12 } } }
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
